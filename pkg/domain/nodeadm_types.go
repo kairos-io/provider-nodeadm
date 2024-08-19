@@ -75,8 +75,8 @@ type IRAConfig struct {
 	ProfileARN string `json:"profileArn" yaml:"profileArn"`
 	// RoleARN is the IAM Roles Anywhere role ARN.
 	RoleARN string `json:"roleArn" yaml:"roleArn"`
-	// TrustAnchorArn is the IAM Roles Anywhere trust anchor ARN.
-	TrustAnchorArn string `json:"trustAnchorArn" yaml:"trustAnchorArn"`
+	// TrustAnchorARN is the IAM Roles Anywhere trust anchor ARN.
+	TrustAnchorARN string `json:"trustAnchorArn" yaml:"trustAnchorArn"`
 	// Certificate is the IAM Roles Anywhere certificate.
 	Certificate string `json:"certificate" yaml:"certificate"`
 	// PrivateKey is the IAM Roles Anywhere private key.
