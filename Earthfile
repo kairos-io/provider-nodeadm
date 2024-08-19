@@ -59,6 +59,11 @@ build-provider-package:
     FROM scratch
     COPY +build-provider/agent-provider-nodeadm /system/providers/agent-provider-nodeadm
     COPY scripts/ /opt/nodeadm/scripts/
+
+    # TODO: remove this and download instead once out of beta
+    COPY bin/nodeadm /opt/nodeadm/bin/nodeadm
+    # DO +DOWNLOAD_BINARIES
+
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:latest
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:${VERSION}
 
@@ -88,9 +93,8 @@ docker:
     WORKDIR /usr/bin
 
     # TODO: remove this and download instead once out of beta
-    COPY bin/nodeadm /usr/bin/nodeadm
+    COPY bin/nodeadm /opt/nodeadm/bin/nodeadm
     # DO +DOWNLOAD_BINARIES
-
     RUN chmod +x nodeadm
 
     COPY +luet/luet /usr/bin/luet

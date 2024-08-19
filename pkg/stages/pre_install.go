@@ -34,8 +34,6 @@ func commandsStage() yip.Stage {
 	return yip.Stage{
 		Name: "Run Pre-installation Commands",
 		Commands: []string{
-			"sysctl --system",
-			"systemctl daemon-reload",
 			"mkdir -p /etc/iam/pki",
 		},
 	}
@@ -43,10 +41,10 @@ func commandsStage() yip.Stage {
 
 func storeVersionStage(version string) yip.Stage {
 	return yip.Stage{
-		If:   "[ ! -f /opt/sentinel_kubernetes_version ]",
+		If:   "[ ! -f /opt/nodeadm/sentinel_kubernetes_version ]",
 		Name: "Create kubernetes version sentinel file",
 		Commands: []string{
-			fmt.Sprintf("echo %s > /opt/sentinel_kubernetes_version", version),
+			fmt.Sprintf("echo %s > /opt/nodeadm/sentinel_kubernetes_version", version),
 		},
 	}
 }

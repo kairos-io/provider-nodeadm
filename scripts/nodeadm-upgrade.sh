@@ -35,7 +35,7 @@ CURRENT_NODE_NAME=$(cat /etc/hostname)
 run_upgrade() {
     echo "running upgrade process on $CURRENT_NODE_NAME"
 
-    old_version=$(cat /opt/sentinel_kubernetes_version)
+    old_version=$(cat /opt/nodeadm/sentinel_kubernetes_version)
     echo "found last deployed version $old_version"
 
     current_version=$KUBERNETES_VERSION
@@ -52,7 +52,7 @@ run_upgrade() {
     # Upgrade loop, runs until stored and current match
     until [ "$current_version" = "$old_version" ]
     do
-        up=("nodeadm upgrade $KUBERNETES_VERSION -d")
+        up=("/opt/nodeadm/bin/nodeadm upgrade $KUBERNETES_VERSION -d")
         upgrade_command="${up[*]}"
 
         echo "upgrading node from $old_version to $current_version using command: $upgrade_command"
@@ -60,7 +60,7 @@ run_upgrade() {
         if sudo -E bash -c "$upgrade_command"
         then
             # Update current kubernetes version
-            echo "$current_version" > /opt/sentinel_kubernetes_version
+            echo "$current_version" > /opt/nodeadm/sentinel_kubernetes_version
             old_version=$current_version
 
             echo "upgrade success"

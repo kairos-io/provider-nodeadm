@@ -63,10 +63,10 @@ func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
 func initStage(proxyArgs string) yip.Stage {
 	return yip.Stage{
 		Name: "Run Nodeadm Init",
-		If:   "[ ! -f /opt/nodeadm.init ]",
+		If:   "[ ! -f /opt/nodeadm/nodeadm.init ]",
 		Commands: []string{
 			fmt.Sprintf("bash %s %s %s", initScript, nodeConfigPath, proxyArgs),
-			"touch /opt/nodeadm.init",
+			"touch /opt/nodeadm/nodeadm.init",
 		},
 	}
 }

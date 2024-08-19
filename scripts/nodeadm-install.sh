@@ -32,12 +32,12 @@ function uninstall() {
 }
 
 if [ "$PROXY_CONFIGURED" = true ]; then
-  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no /opt/nodeadm/bin/nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
   do
     uninstall_and_retry
   done;
 else
-  until nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+  until /opt/nodeadm/bin/nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
   do
     uninstall_and_retry
   done;

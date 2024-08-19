@@ -25,7 +25,7 @@ if [ "$PROXY_CONFIGURED" = true ]; then
     retry_init
   done;
 else
-  until nodeadm init -c file://$CONFIG_FILE -d > /dev/null
+  until /opt/nodeadm/bin/nodeadm init -c file://$CONFIG_FILE -d > /dev/null
   do
     retry_init
   done;

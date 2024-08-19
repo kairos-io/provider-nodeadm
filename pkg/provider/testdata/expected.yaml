@@ -170,7 +170,7 @@ Stages:
   - After: null
     Commands:
     - 'bash /opt/nodeadm/scripts/nodeadm-install.sh 1.30.0 "iam-ra" '
-    - touch /opt/nodeadm.install
+    - touch /opt/nodeadm/nodeadm.install
     DataSources:
       Path: ""
       Providers: null
@@ -198,7 +198,7 @@ Stages:
       Path: ""
       URL: ""
     Hostname: ""
-    If: '[ ! -f /opt/nodeadm.install ]'
+    If: '[ ! -f /opt/nodeadm/nodeadm.install ]'
     Layout:
       Device: null
       Expand: null
