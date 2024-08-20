@@ -8,6 +8,7 @@ import (
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
 )
 
+// InstallYipStages returns the stages required to run 'nodeadm install' and 'nodeadm upgrade'.
 func InstallYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
 	return []yip.Stage{
 		installStage(nc, proxyArgs),

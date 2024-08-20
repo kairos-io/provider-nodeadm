@@ -18,6 +18,7 @@ const (
 
 var nodeConfigPath = filepath.Join(configurationPath, nodeConfigFile)
 
+// InitYipStages returns the stages required to run 'nodeadm init'.
 func InitYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
 	return []yip.Stage{
 		initConfigStage(nc),

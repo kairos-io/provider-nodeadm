@@ -1,3 +1,4 @@
+// Package provider contains the Kairos provider for EKS hybrid edge nodes.
 package provider
 
 import (
@@ -12,7 +13,7 @@ import (
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/stages"
 )
 
-// NodeadmProvider is the kairos cluster provider for EKS hybrid cluster edge nodes.
+// NodeadmProvider is the kairos cluster provider for EKS hybrid edge nodes.
 func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	var nc domain.NodeadmConfig
 

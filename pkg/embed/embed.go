@@ -1,3 +1,4 @@
+// Package embed contains provider-nodeadm's Go templates.
 package embed
 
 import (

@@ -1,3 +1,4 @@
+// Package domain contains provider-nodeadm's configuration types.
 package domain
 
 // CredentialProvider is the AWS credential provider type.
@@ -36,6 +37,7 @@ const (
 	CredentialProviderSystemsManager CredentialProvider = "ssm"
 )
 
+// NodeadmConfig contains all configuration required by nodeadm to bootstrap an EKS hybrid node.
 type NodeadmConfig struct {
 	// CredentialProvider is the AWS credential provider type. Supported values are "iam-ra" and "ssm".
 	CredentialProvider CredentialProvider `json:"credentialProvider" yaml:"credentialProvider"`
@@ -48,6 +50,7 @@ type NodeadmConfig struct {
 	NodeConfiguration NodeConfig `json:"nodeConfiguration" yaml:"nodeConfiguration"`
 }
 
+// NetworkConfig contains the EKS hybrid node's network configuration.
 type NetworkConfig struct {
 	// ServiceCIDR is the cluster's service CIDR.
 	ServiceCIDR string `json:"serviceCidr" yaml:"serviceCidr"`
@@ -55,6 +58,7 @@ type NetworkConfig struct {
 	PodCIDR string `json:"podCidr" yaml:"podCidr"`
 }
 
+// NodeConfig contains the EKS hybrid node's local configuration.
 type NodeConfig struct {
 	// ClusterName is the name of hybrid nodes-enabled EKS cluster.
 	ClusterName string `json:"clusterName" yaml:"clusterName"`
@@ -66,6 +70,7 @@ type NodeConfig struct {
 	SSM *SSMConfig `json:"ssm,omitempty" yaml:"ssm,omitempty"`
 }
 
+// IRAConfig contains IAM Roles Anywhere authentication configuration.
 type IRAConfig struct {
 	// NodeName is the name of the hybrid edge node.
 	NodeName string `json:"nodeName" yaml:"nodeName"`
@@ -83,6 +88,7 @@ type IRAConfig struct {
 	PrivateKey string `json:"privateKey" yaml:"privateKey"`
 }
 
+// SSMConfig contains Systems Manager authentication configuration.
 type SSMConfig struct {
 	// ActivationCode is the Systems Manager activation code.
 	ActivationCode string `json:"activationCode" yaml:"activationCode"`

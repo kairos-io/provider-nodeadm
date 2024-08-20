@@ -1,3 +1,4 @@
+// Package stages contains helpers to generate yip stages for nodeadm.
 package stages
 
 import (
@@ -22,6 +23,7 @@ var (
 	upgradeScript = filepath.Join(helperScriptPath, "nodeadm-upgrade.sh")
 )
 
+// PreInstallYipStages returns the setup stages required prior to running 'nodeadm install'.
 func PreInstallYipStages(env map[string]string, nc domain.NodeadmConfig) []yip.Stage {
 	return []yip.Stage{
 		proxyStage(nc, env),
