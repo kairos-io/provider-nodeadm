@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,6 +19,7 @@ jobs:
         with:
           version: "v0.6.30"
       - run: earthly --ci +lint
+      - run: earthly --ci +test
 
   build-provider-package:
     runs-on: ubuntu-latest

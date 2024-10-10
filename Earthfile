@@ -74,6 +74,10 @@ lint:
     COPY . .
     RUN golangci-lint run --timeout=5m
 
+test:
+    FROM +go-deps
+    RUN go test ./... -v -timeout 5m
+
 DOWNLOAD_BINARIES:
     COMMAND
     RUN curl -L --remote-name-all https://storage.googleapis.com/kubernetes-release/release/v${NODEADM_VERSION}/bin/linux/amd64/nodeadm
