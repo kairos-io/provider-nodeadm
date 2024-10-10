@@ -76,7 +76,8 @@ lint:
 
 test:
     FROM +go-deps
-    RUN go test ./... -v -timeout 5m
+    COPY . ./
+    RUN go test -v -timeout 5m ./...
 
 DOWNLOAD_BINARIES:
     COMMAND
