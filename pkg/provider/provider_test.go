@@ -5,18 +5,26 @@ import (
 	"testing"
 
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
-	"sigs.k8s.io/yaml"
+	kyaml "sigs.k8s.io/yaml"
+
+	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
 )
 
 func TestNodeadmProvider(t *testing.T) {
-	opts, _ := os.ReadFile("testdata/options.yaml")
+	netConfig, _ := os.ReadFile("testdata/network-configuration.json")
+	nodeConfig, _ := os.ReadFile("testdata/node-configuration.json")
 	expected, _ := os.ReadFile("testdata/expected.yaml")
 
 	cluster := clusterplugin.Cluster{
-		Options: string(opts),
+		ProviderOptions: map[string]string{
+			domain.CredentialProviderKey:   "iam-ra",
+			domain.KubernetesVersionKey:    "1.30.0",
+			domain.NetworkConfigurationKey: string(netConfig),
+			domain.NodeConfigurationKey:    string(nodeConfig),
+		},
 	}
 	schema := NodeadmProvider(cluster)
-	got, _ := yaml.Marshal(schema)
+	got, _ := kyaml.Marshal(schema)
 
 	if string(got) != string(expected) {
 		_ = os.WriteFile("testdata/got.yaml", got, 0644)
