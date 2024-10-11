@@ -69,7 +69,7 @@ func storeVersionStage(version string) yip.Stage {
 		If:   fmt.Sprintf("[ ! -f %s/sentinel_kubernetes_version ]", runtimeRoot),
 		Name: "Create kubernetes version sentinel file",
 		Commands: []string{
-			fmt.Sprintf("echo %s > %s/sentinel_kubernetes_version", runtimeRoot, version),
+			fmt.Sprintf("echo %s > %s/sentinel_kubernetes_version", version, runtimeRoot),
 		},
 	}
 }

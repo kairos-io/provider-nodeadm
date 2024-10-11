@@ -8,6 +8,7 @@ import (
 	kyaml "sigs.k8s.io/yaml"
 
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
+	"github.com/spectrocloud-labs/provider-nodeadm/pkg/stages"
 )
 
 func TestNodeadmProvider(t *testing.T) {
@@ -23,6 +24,7 @@ func TestNodeadmProvider(t *testing.T) {
 			domain.NodeConfigurationKey:    string(nodeConfig),
 		},
 	}
+	stages.InitPaths(cluster)
 	schema := NodeadmProvider(cluster)
 	got, _ := kyaml.Marshal(schema)
 
