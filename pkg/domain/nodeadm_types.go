@@ -1,6 +1,21 @@
 // Package domain contains provider-nodeadm's configuration types.
 package domain
 
+// Provider option keys
+const (
+	// CredentialProviderKey is the key for the AWS credential provider type.
+	CredentialProviderKey string = "credentialProvider"
+
+	// KubernetesVersionKey is the key for the target version of the hybrid edge node.
+	KubernetesVersionKey string = "kubernetesVersion"
+
+	// NetworkConfigurationKey is the key for the network configuration of the cluster.
+	NetworkConfigurationKey string = "networkConfiguration"
+
+	// NodeConfigurationKey is the key for the configuration of the hybrid edge node.
+	NodeConfigurationKey string = "nodeConfiguration"
+)
+
 // CredentialProvider is the AWS credential provider type.
 type CredentialProvider string
 

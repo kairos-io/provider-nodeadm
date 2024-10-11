@@ -10,15 +10,15 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: docker-practice/actions-setup-docker@master
       - uses: earthly/actions-setup@v1
         with:
           version: "v0.6.30"
       - run: earthly --ci +lint
+      - run: earthly --ci +test
 
   build-provider-package:
     runs-on: ubuntu-latest
