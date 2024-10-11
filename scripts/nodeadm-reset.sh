@@ -7,9 +7,9 @@ exec 19>> /var/log/nodeadm-reset.log
 export BASH_XTRACEFD="19"
 set -ex
 
-source ./uninstall.sh
-
 root_path=$1
+
+source "$root_path"/scripts/uninstall.sh
 
 export PATH="$PATH:$root_path/bin"
 

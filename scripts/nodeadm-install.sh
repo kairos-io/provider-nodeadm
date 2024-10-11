@@ -7,8 +7,6 @@ exec 19>> /var/log/nodeadm-install.log
 export BASH_XTRACEFD="19"
 set -ex
 
-source ./uninstall.sh
-
 KUBERNETES_VERSION=$1
 CREDENTIAL_PROVIDER=$2
 
@@ -17,6 +15,8 @@ PROXY_CONFIGURED=$4
 proxy_http=$5
 proxy_https=$6
 proxy_no=$7
+
+source "$root_path"/scripts/uninstall.sh
 
 export PATH="$PATH:$root_path/bin"
 
