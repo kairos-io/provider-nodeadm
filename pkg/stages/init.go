@@ -2,7 +2,6 @@ package stages
 
 import (
 	"fmt"
-	"path/filepath"
 
 	yip "github.com/mudler/yip/pkg/schema"
 	"github.com/sirupsen/logrus"
@@ -11,12 +10,9 @@ import (
 )
 
 const (
-	configurationPath  = "/opt/nodeadm"
 	nodeConfigFile     = "node-config.yaml"
 	nodeConfigTemplate = "node-config.tmpl"
 )
-
-var nodeConfigPath = filepath.Join(configurationPath, nodeConfigFile)
 
 // InitYipStages returns the stages required to run 'nodeadm init'.
 func InitYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
@@ -64,10 +60,10 @@ func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
 func initStage(proxyArgs string) yip.Stage {
 	return yip.Stage{
 		Name: "Run Nodeadm Init",
-		If:   "[ ! -f /opt/nodeadm/nodeadm.init ]",
+		If:   fmt.Sprintf("[ ! -f %s/nodeadm.init ]", runtimeRoot),
 		Commands: []string{
-			fmt.Sprintf("bash %s %s %s", initScript, nodeConfigPath, proxyArgs),
-			"touch /opt/nodeadm/nodeadm.init",
+			fmt.Sprintf("bash %s %s %t %s", initScript, nodeConfigPath, len(proxyArgs) > 0, proxyArgs),
+			fmt.Sprintf("touch %s/nodeadm.init", runtimeRoot),
 		},
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
+	"github.com/mudler/go-pluggable"
 	"github.com/sirupsen/logrus"
 
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/provider"
@@ -21,7 +22,12 @@ func main() {
 		Provider: provider.NodeadmProvider,
 	}
 
-	if err := plugin.Run(); err != nil {
+	if err := plugin.Run(
+		pluggable.FactoryPlugin{
+			EventType:     clusterplugin.EventClusterReset,
+			PluginHandler: provider.Reset,
+		},
+	); err != nil {
 		logrus.Fatal(err)
 	}
 }

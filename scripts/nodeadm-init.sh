@@ -9,10 +9,13 @@ set -ex
 
 CONFIG_FILE=$1
 
-PROXY_CONFIGURED=$2
-proxy_http=$3
-proxy_https=$4
-proxy_no=$5
+root_path=$2
+PROXY_CONFIGURED=$3
+proxy_http=$4
+proxy_https=$5
+proxy_no=$6
+
+export PATH="$PATH:$root_path/bin"
 
 function retry_init() {
   echo "nodeadm init failed, retrying in 10s";
@@ -25,7 +28,7 @@ if [ "$PROXY_CONFIGURED" = true ]; then
     retry_init
   done;
 else
-  until /opt/nodeadm/bin/nodeadm init -c file://$CONFIG_FILE -d > /dev/null
+  until nodeadm init -c file://$CONFIG_FILE -d > /dev/null
   do
     retry_init
   done;

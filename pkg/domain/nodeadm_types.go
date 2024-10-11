@@ -3,6 +3,9 @@ package domain
 
 // Provider option keys
 const (
+	// ClusterRootPathKey is the key for the cluster's root path.
+	ClusterRootPathKey = "cluster_root_path"
+
 	// CredentialProviderKey is the key for the AWS credential provider type.
 	CredentialProviderKey string = "credentialProvider"
 
