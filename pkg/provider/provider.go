@@ -5,9 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/kairos-io/kairos-sdk/bus"
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
+	"github.com/mudler/go-pluggable"
 	yip "github.com/mudler/yip/pkg/schema"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
 
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/stages"
@@ -59,6 +62,9 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		logrus.Fatalf("failed to unmarshal node configuration %+v: %v", nodeConfig, err)
 	}
 
+	// Generate yip stages
+	stages.InitPaths(cluster)
+
 	var proxyArgs string
 	if stages.IsProxyConfigured(cluster.Env) {
 		proxyArgs = fmt.Sprintf("%t %s %s %s",
@@ -81,4 +87,37 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	return cfg
+}
+
+// Reset handles cluster reset events.
+func Reset(event *pluggable.Event) pluggable.EventResponse {
+	var (
+		payload  bus.EventPayload
+		config   clusterplugin.Config
+		response pluggable.EventResponse
+	)
+
+	// parse the boot payload
+	if err := json.Unmarshal([]byte(event.Data), &payload); err != nil {
+		response.Error = fmt.Sprintf("failed to parse boot event: %v", err)
+		return response
+	}
+
+	// parse config from boot payload
+	if err := yaml.Unmarshal([]byte(payload.Config), &config); err != nil {
+		response.Error = fmt.Sprintf("failed to parse config from boot event: %v", err)
+		return response
+	}
+
+	if config.Cluster == nil {
+		return response
+	}
+	stages.InitPaths(*config.Cluster)
+
+	output, err := stages.ResetCmd().CombinedOutput()
+	if err != nil {
+		response.Error = fmt.Sprintf("failed to reset cluster: %s", string(output))
+	}
+
+	return response
 }

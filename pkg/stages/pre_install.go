@@ -6,22 +6,45 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/kairos-io/kairos-sdk/clusterplugin"
 	yip "github.com/mudler/yip/pkg/schema"
 
 	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
 )
 
 const (
-	envPrefix        = "Environment="
-	helperScriptPath = "/opt/nodeadm/scripts"
-	k8sNoProxy       = ".svc,.svc.cluster,.svc.cluster.local"
+	envPrefix   = "Environment="
+	k8sNoProxy  = ".svc,.svc.cluster,.svc.cluster.local"
+	nodeadmRoot = "/opt/nodeadm"
 )
 
 var (
-	initScript    = filepath.Join(helperScriptPath, "nodeadm-init.sh")
-	installScript = filepath.Join(helperScriptPath, "nodeadm-install.sh")
-	upgradeScript = filepath.Join(helperScriptPath, "nodeadm-upgrade.sh")
+	initScript, installScript, resetScript, upgradeScript string
+	nodeConfigPath                                        string
+	runtimeRoot                                           string
 )
+
+// InitPaths initializes all nodeadm paths relative to the cluster's root path.
+func InitPaths(cluster clusterplugin.Cluster) {
+	clusterRootPath := clusterRootPath(cluster)
+
+	runtimeRoot = filepath.Join(clusterRootPath, nodeadmRoot)
+
+	nodeConfigPath = filepath.Join(runtimeRoot, nodeConfigFile)
+
+	initScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-init.sh")
+	installScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-install.sh")
+	resetScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-reset.sh")
+	upgradeScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-upgrade.sh")
+}
+
+func clusterRootPath(cluster clusterplugin.Cluster) string {
+	rootpath := cluster.ProviderOptions[domain.ClusterRootPathKey]
+	if rootpath == "" {
+		return "/"
+	}
+	return rootpath
+}
 
 // PreInstallYipStages returns the setup stages required prior to running 'nodeadm install'.
 func PreInstallYipStages(env map[string]string, nc domain.NodeadmConfig) []yip.Stage {
@@ -43,10 +66,10 @@ func commandsStage() yip.Stage {
 
 func storeVersionStage(version string) yip.Stage {
 	return yip.Stage{
-		If:   "[ ! -f /opt/nodeadm/sentinel_kubernetes_version ]",
+		If:   fmt.Sprintf("[ ! -f %s/sentinel_kubernetes_version ]", runtimeRoot),
 		Name: "Create kubernetes version sentinel file",
 		Commands: []string{
-			fmt.Sprintf("echo %s > /opt/nodeadm/sentinel_kubernetes_version", version),
+			fmt.Sprintf("echo %s > %s/sentinel_kubernetes_version", runtimeRoot, version),
 		},
 	}
 }

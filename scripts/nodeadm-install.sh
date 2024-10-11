@@ -7,13 +7,18 @@ exec 19>> /var/log/nodeadm-install.log
 export BASH_XTRACEFD="19"
 set -ex
 
+source ./uninstall.sh
+
 KUBERNETES_VERSION=$1
 CREDENTIAL_PROVIDER=$2
 
-PROXY_CONFIGURED=$3
-proxy_http=$4
-proxy_https=$5
-proxy_no=$6
+root_path=$3
+PROXY_CONFIGURED=$4
+proxy_http=$5
+proxy_https=$6
+proxy_no=$7
+
+export PATH="$PATH:$root_path/bin"
 
 function uninstall_and_retry() {
   echo "nodeadm install failed, applying reset";
@@ -22,22 +27,13 @@ function uninstall_and_retry() {
   sleep 10;
 }
 
-function uninstall() {
-  nodeadm uninstall -d
-  iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
-  rm -rf /etc/kubernetes
-  rm -rf /etc/cni/net.d /opt/cni
-  rm -rf /usr/bin/containerd /usr/bin/kubelet /etc/systemd/system/kubelet.service
-  rm -rf /usr/local/bin/aws* /usr/local/bin/kubectl /etc/eks/
-}
-
 if [ "$PROXY_CONFIGURED" = true ]; then
-  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no /opt/nodeadm/bin/nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
   do
     uninstall_and_retry
   done;
 else
-  until /opt/nodeadm/bin/nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+  until nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
   do
     uninstall_and_retry
   done;

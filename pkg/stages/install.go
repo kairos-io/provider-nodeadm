@@ -19,10 +19,10 @@ func InstallYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
 func installStage(nc domain.NodeadmConfig, proxyArgs string) yip.Stage {
 	return yip.Stage{
 		Name: "Run Nodeadm Install",
-		If:   "[ ! -f /opt/nodeadm/nodeadm.install ]",
+		If:   fmt.Sprintf("[ ! -f %s/nodeadm.install ]", runtimeRoot),
 		Commands: []string{
-			fmt.Sprintf("bash %s %s %s %s", installScript, nc.KubernetesVersion, nc.CredentialProvider, proxyArgs),
-			"touch /opt/nodeadm/nodeadm.install",
+			fmt.Sprintf("bash %s %s %s %t %s", installScript, nc.KubernetesVersion, nc.CredentialProvider, len(proxyArgs) > 0, proxyArgs),
+			fmt.Sprintf("touch %s/nodeadm.install", runtimeRoot),
 		},
 	}
 }
@@ -31,7 +31,7 @@ func upgradeStage(nc domain.NodeadmConfig, proxyArgs string) yip.Stage {
 	return yip.Stage{
 		Name: "Run Nodeadm Upgrade",
 		Commands: []string{
-			fmt.Sprintf("bash %s %s %s", upgradeScript, nc.KubernetesVersion, proxyArgs),
+			fmt.Sprintf("bash %s %s %s %t %s", upgradeScript, nc.KubernetesVersion, runtimeRoot, len(proxyArgs) > 0, proxyArgs),
 		},
 	}
 }
