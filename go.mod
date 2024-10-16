@@ -1,4 +1,4 @@
-module github.com/spectrocloud-labs/provider-nodeadm
+module github.com/spectrocloud/provider-nodeadm
 
 go 1.23.1
 
