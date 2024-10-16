@@ -5,7 +5,7 @@ import (
 
 	yip "github.com/mudler/yip/pkg/schema"
 
-	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
+	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
 )
 
 // InstallYipStages returns the stages required to run 'nodeadm install' and 'nodeadm upgrade'.

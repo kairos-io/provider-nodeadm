@@ -12,8 +12,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 
-	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
-	"github.com/spectrocloud-labs/provider-nodeadm/pkg/stages"
+	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
+	"github.com/spectrocloud/provider-nodeadm/pkg/stages"
 )
 
 // NodeadmProvider is the kairos cluster provider for EKS hybrid edge nodes.

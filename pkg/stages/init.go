@@ -5,8 +5,9 @@ import (
 
 	yip "github.com/mudler/yip/pkg/schema"
 	"github.com/sirupsen/logrus"
-	"github.com/spectrocloud-labs/provider-nodeadm/pkg/domain"
-	"github.com/spectrocloud-labs/provider-nodeadm/pkg/embed"
+
+	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
+	"github.com/spectrocloud/provider-nodeadm/pkg/embed"
 )
 
 const (
