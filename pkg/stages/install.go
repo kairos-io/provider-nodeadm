@@ -21,7 +21,7 @@ func installStage(nc domain.NodeadmConfig, proxyArgs string) yip.Stage {
 		Name: "Run Nodeadm Install",
 		If:   fmt.Sprintf("[ ! -f %s/nodeadm.install ]", runtimeRoot),
 		Commands: []string{
-			fmt.Sprintf("bash %s %s %s %t %s", installScript, nc.KubernetesVersion, nc.CredentialProvider, len(proxyArgs) > 0, proxyArgs),
+			fmt.Sprintf("bash %s %s %s %s %t %s", installScript, nc.KubernetesVersion, nc.CredentialProvider, runtimeRoot, len(proxyArgs) > 0, proxyArgs),
 			fmt.Sprintf("touch %s/nodeadm.install", runtimeRoot),
 		},
 	}
