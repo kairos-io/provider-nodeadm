@@ -13,4 +13,4 @@ source "$root_path"/scripts/uninstall.sh
 
 export PATH="$PATH:$root_path/bin"
 
-uninstall
+uninstall $root_path

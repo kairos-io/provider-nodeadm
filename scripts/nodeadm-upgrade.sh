@@ -4,7 +4,8 @@ exec > >(tee -ia /var/log/nodeadm-upgrade.log)
 exec 2> >(tee -ia /var/log/nodeadm-upgrade.log >& 2)
 exec 19>> /var/log/nodeadm-upgrade.log
 
-set -x
+export BASH_XTRACEFD="19"
+set -ex
 
 KUBERNETES_VERSION=$1
 
