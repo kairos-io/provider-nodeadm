@@ -22,7 +22,7 @@ export PATH="$PATH:$root_path/bin"
 
 function uninstall_and_retry() {
   echo "nodeadm install failed, applying reset";
-  uninstall
+  uninstall $root_path
   echo "retrying in 10s"
   sleep 10;
 }
