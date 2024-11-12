@@ -16,6 +16,10 @@ function uninstall() {
 
   iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
+  rm -rf $root_path/nodeadm.init
+  rm -rf $root_path/nodeadm.install
+  rm -rf $root_path/sentinel_kubernetes_version
+
   rm -rf /var/log/containers
   rm -rf /var/log/nodeadm-*.log
 }
