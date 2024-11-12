@@ -8,12 +8,13 @@ export BASH_XTRACEFD="19"
 set -ex
 
 KUBERNETES_VERSION=$1
+CONFIG_FILE=$2
 
-root_path=$2
-PROXY_CONFIGURED=$3
-proxy_http=$4
-proxy_https=$5
-proxy_no=$6
+root_path=$3
+PROXY_CONFIGURED=$4
+proxy_http=$5
+proxy_https=$6
+proxy_no=$7
 
 export PATH="$PATH:$root_path/bin"
 
