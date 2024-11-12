@@ -217,7 +217,8 @@ Stages:
     Users: null
   - After: null
     Commands:
-    - 'bash /opt/nodeadm/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadm false '
+    - 'bash /opt/nodeadm/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadm/node-config.yaml
+      /opt/nodeadm false '
     DataSources:
       Path: ""
       Providers: null

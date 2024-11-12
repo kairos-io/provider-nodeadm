@@ -8,12 +8,13 @@ export BASH_XTRACEFD="19"
 set -ex
 
 KUBERNETES_VERSION=$1
+CONFIG_FILE=$2
 
-root_path=$2
-PROXY_CONFIGURED=$3
-proxy_http=$4
-proxy_https=$5
-proxy_no=$6
+root_path=$3
+PROXY_CONFIGURED=$4
+proxy_http=$5
+proxy_https=$6
+proxy_no=$7
 
 export PATH="$PATH:$root_path/bin"
 
@@ -56,10 +57,10 @@ run_upgrade() {
     # Upgrade loop, runs until stored and current match
     until [ "$current_version" = "$old_version" ]
     do
-        upgrade_command="nodeadm upgrade $KUBERNETES_VERSION -d"
+        upgrade_command="nodeadm upgrade -c file://$CONFIG_FILE -d $KUBERNETES_VERSION"
 
         if [ "$PROXY_CONFIGURED" = true ]; then
-          up=("nodeadm upgrade $KUBERNETES_VERSION -d")
+          up=("nodeadm upgrade -c $CONFIG_FILE -d $KUBERNETES_VERSION")
           upgrade_command="${up[*]}"
         fi
 
