@@ -2,9 +2,9 @@
 
 exec > >(tee -ia /var/log/nodeadm-reset.log)
 exec 2> >(tee -ia /var/log/nodeadm-reset.log >& 2)
-exec 19>> /var/log/nodeadm-reset.log
+exec 21>> /var/log/nodeadm-reset.log
 
-export BASH_XTRACEFD="19"
+export BASH_XTRACEFD="21"
 set -ex
 
 root_path=$1
