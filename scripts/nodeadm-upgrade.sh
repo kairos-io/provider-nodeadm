@@ -57,10 +57,10 @@ run_upgrade() {
     # Upgrade loop, runs until stored and current match
     until [ "$current_version" = "$old_version" ]
     do
-        upgrade_command="nodeadm upgrade $KUBERNETES_VERSION -d"
+        upgrade_command="nodeadm upgrade -c $CONFIG_FILE -d $KUBERNETES_VERSION"
 
         if [ "$PROXY_CONFIGURED" = true ]; then
-          up=("nodeadm upgrade $KUBERNETES_VERSION -d")
+          up=("nodeadm upgrade -c $CONFIG_FILE -d $KUBERNETES_VERSION")
           upgrade_command="${up[*]}"
         fi
 
