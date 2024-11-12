@@ -1,18 +1,13 @@
 #!/bin/bash
 
 function uninstall() {
-  set +e
-
   root_path=$1
 
   systemctl stop kubelet
   systemctl stop containerd
 
-  pkill -9 kubelet || true
-  pkill -9 containerd || true
-
-  umount -l /var/lib/kubelet
-  umount -l /var/lib/containerd
+  # Find all mount points under /var/lib/kubelet/pods and unmount them
+  find /var/lib/kubelet/pods -type d -exec bash -c 'mountpoint -q "$1" && umount -l "$1"' _ {} \;
 
   rm -rf /var/lib/kubelet && rm -rf $root_path/var/lib/kubelet
   rm -rf /var/lib/containerd && rm -rf $root_path/var/lib/containerd
@@ -23,6 +18,4 @@ function uninstall() {
 
   rm -rf /var/log/containers
   rm -rf /var/log/nodeadm-*.log
-
-  set -e
 }
