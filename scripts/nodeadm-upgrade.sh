@@ -98,3 +98,6 @@ run_upgrade() {
 }
 
 run_upgrade
+
+echo "Re-initializing node"
+bash "$root_path"/scripts/nodeadm-init.sh "$CONFIG_FILE" "$root_path" "$PROXY_CONFIGURED" "$proxy_http" "$proxy_https" "$proxy_no"
