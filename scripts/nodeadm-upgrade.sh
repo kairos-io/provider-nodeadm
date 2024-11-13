@@ -40,7 +40,13 @@ CURRENT_NODE_NAME=$(cat /etc/hostname)
 run_upgrade() {
     echo "running upgrade process on $CURRENT_NODE_NAME"
 
-    old_version=$(cat "$root_path"/sentinel_kubernetes_version)
+    if ! [ -f "$root_path/sentinel_kubernetes_version" ]; then
+      echo "$KUBERNETES_VERSION" > "$root_path/sentinel_kubernetes_version"
+      echo "upgrade is a no-op; created sentinel file with version: $KUBERNETES_VERSION"
+      exit 0
+    fi
+
+    old_version=$(cat "$root_path/sentinel_kubernetes_version")
     echo "found last deployed version $old_version"
 
     current_version=$KUBERNETES_VERSION
@@ -70,7 +76,7 @@ run_upgrade() {
         if [ "$PROXY_CONFIGURED" = true ]; then
           if sudo -E bash -c "$upgrade_command"
           then
-              echo "$current_version" > "$root_path"/sentinel_kubernetes_version
+              echo "$current_version" > "$root_path/sentinel_kubernetes_version"
               old_version=$current_version
               echo "upgrade success"
           else
@@ -80,7 +86,7 @@ run_upgrade() {
         else
           if $upgrade_command
           then
-              echo "$current_version" > "$root_path"/sentinel_kubernetes_version
+              echo "$current_version" > "$root_path/sentinel_kubernetes_version"
               old_version=$current_version
               echo "upgrade success"
           else

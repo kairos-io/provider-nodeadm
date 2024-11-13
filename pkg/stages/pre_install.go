@@ -51,7 +51,6 @@ func PreInstallYipStages(env map[string]string, nc domain.NodeadmConfig) []yip.S
 	return []yip.Stage{
 		proxyStage(nc, env),
 		commandsStage(),
-		storeVersionStage(nc.KubernetesVersion),
 	}
 }
 
@@ -60,16 +59,6 @@ func commandsStage() yip.Stage {
 		Name: "Run Pre-installation Commands",
 		Commands: []string{
 			"mkdir -p /etc/iam/pki",
-		},
-	}
-}
-
-func storeVersionStage(version string) yip.Stage {
-	return yip.Stage{
-		If:   fmt.Sprintf("[ ! -f %s/sentinel_kubernetes_version ]", runtimeRoot),
-		Name: "Create kubernetes version sentinel file",
-		Commands: []string{
-			fmt.Sprintf("echo %s > %s/sentinel_kubernetes_version", version, runtimeRoot),
 		},
 	}
 }
