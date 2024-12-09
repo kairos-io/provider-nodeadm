@@ -8,7 +8,7 @@ ARG BASE_IMAGE=$IMAGE_REPOSITORY/opensuse:leap-15.5-core-amd64-generic-v2.4.3
 ARG BASE_IMAGE_NAME=$(echo $BASE_IMAGE | grep -o [^/]*: | rev | cut -c2- | rev)
 ARG BASE_IMAGE_TAG=$(echo $BASE_IMAGE | grep -o :.* | cut -c2-)
 ARG PROVIDER_IMAGE_NAME=nodeadm
-ARG NODEADM_VERSION=latest
+ARG NODEADM_VERSION=1.0.0
 ARG NODEADM_VERSION_TAG=$(echo $NODEADM_VERSION | sed s/+/-/)
 
 ARG LUET_VERSION=0.35.1
@@ -41,6 +41,13 @@ BUILD_GOLANG:
     RUN go-build-static.sh -a -o ${BIN} ./${SRC}
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
 
+ARCH:
+    COMMAND
+    ARG TARGETPLATFORM
+    FROM alpine
+    RUN echo "$TARGETPLATFORM" | awk -F/ '{print $2}' > ARCH
+    SAVE ARTIFACT ARCH ARCH
+
 VERSION:
     COMMAND
     FROM alpine
@@ -56,13 +63,11 @@ build-provider:
 build-provider-package:
     DO +VERSION
     ARG VERSION=$(cat VERSION)
+
     FROM scratch
+
     COPY +build-provider/agent-provider-nodeadm /system/providers/agent-provider-nodeadm
     COPY scripts/ /opt/nodeadm/scripts/
-
-    # TODO: remove this and download instead once out of beta
-    COPY bin/nodeadm /opt/nodeadm/bin/nodeadm
-    # DO +DOWNLOAD_BINARIES
 
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:latest
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:${VERSION}
@@ -81,7 +86,8 @@ test:
 
 DOWNLOAD_BINARIES:
     COMMAND
-    RUN curl -L --remote-name-all https://storage.googleapis.com/kubernetes-release/release/v${NODEADM_VERSION}/bin/linux/amd64/nodeadm
+    ARG --required ARCH
+    RUN curl -L --remote-name-all https://hybrid-assets.eks.amazonaws.com/releases/v${NODEADM_VERSION}/bin/linux/${ARCH}/nodeadm
 
 SAVE_IMAGE:
     COMMAND
@@ -90,6 +96,9 @@ SAVE_IMAGE:
     SAVE IMAGE --push $IMAGE_REPOSITORY/${BASE_IMAGE_NAME}-${PROVIDER_IMAGE_NAME}:${NODEADM_VERSION_TAG}_${VERSION}
 
 docker:
+    DO +ARCH
+    ARG ARCH=$(cat ARCH)
+
     DO +VERSION
     ARG VERSION=$(cat VERSION)
 
@@ -97,9 +106,8 @@ docker:
 
     WORKDIR /usr/bin
 
-    # TODO: remove this and download instead once out of beta
-    COPY bin/nodeadm /opt/nodeadm/bin/nodeadm
-    # DO +DOWNLOAD_BINARIES
+    DO +DOWNLOAD_BINARIES --ARCH=$ARCH
+
     RUN chmod +x nodeadm
 
     COPY +luet/luet /usr/bin/luet
