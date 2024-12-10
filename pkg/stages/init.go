@@ -3,11 +3,13 @@ package stages
 import (
 	"fmt"
 
+	"github.com/aws/eks-hybrid/api/v1alpha1"
 	yip "github.com/mudler/yip/pkg/schema"
 	"github.com/sirupsen/logrus"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kyaml "sigs.k8s.io/yaml"
 
 	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
-	"github.com/spectrocloud/provider-nodeadm/pkg/embed"
 )
 
 const (
@@ -24,7 +26,7 @@ func InitYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
 }
 
 func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
-	bs, err := embed.EFS.RenderTemplateBytes(nc.NodeConfiguration, "", nodeConfigTemplate)
+	bs, err := toHybridConfig(nc)
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -56,6 +58,44 @@ func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
 	}
 
 	return initConfigStage
+}
+
+func toHybridConfig(nc domain.NodeadmConfig) ([]byte, error) {
+	nodeConfig := v1alpha1.NodeConfig{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "node.eks.aws/v1alpha1",
+			Kind:       "NodeConfig",
+		},
+		ObjectMeta: metav1.ObjectMeta{},
+		Spec: v1alpha1.NodeConfigSpec{
+			Cluster: v1alpha1.ClusterDetails{
+				Name:   nc.NodeConfiguration.ClusterName,
+				Region: nc.NodeConfiguration.Region,
+			},
+			Hybrid: &v1alpha1.HybridOptions{
+				EnableCredentialsFile: false,
+			},
+		},
+	}
+	if nc.NodeConfiguration.UserConfig != nil {
+		nodeConfig.Spec.Containerd = nc.NodeConfiguration.UserConfig.Containerd
+		nodeConfig.Spec.Kubelet = nc.NodeConfiguration.UserConfig.Kubelet
+	}
+	if nc.NodeConfiguration.IAMRolesAnywhere != nil && nc.NodeConfiguration.IAMRolesAnywhere.RoleARN != "" {
+		nodeConfig.Spec.Hybrid.IAMRolesAnywhere = &v1alpha1.IAMRolesAnywhere{
+			NodeName:       nc.NodeConfiguration.IAMRolesAnywhere.NodeName,
+			TrustAnchorARN: nc.NodeConfiguration.IAMRolesAnywhere.TrustAnchorARN,
+			ProfileARN:     nc.NodeConfiguration.IAMRolesAnywhere.ProfileARN,
+			RoleARN:        nc.NodeConfiguration.IAMRolesAnywhere.RoleARN,
+		}
+	}
+	if nc.NodeConfiguration.SSM != nil && nc.NodeConfiguration.SSM.ActivationCode != "" {
+		nodeConfig.Spec.Hybrid.SSM = &v1alpha1.SSM{
+			ActivationCode: nc.NodeConfiguration.SSM.ActivationCode,
+			ActivationID:   nc.NodeConfiguration.SSM.ActivationID,
+		}
+	}
+	return kyaml.Marshal(nodeConfig)
 }
 
 func initStage(proxyArgs string) yip.Stage {

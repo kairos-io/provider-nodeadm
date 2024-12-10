@@ -2,6 +2,7 @@ package provider
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
@@ -11,25 +12,90 @@ import (
 	"github.com/spectrocloud/provider-nodeadm/pkg/stages"
 )
 
-func TestNodeadmProvider(t *testing.T) {
-	netConfig, _ := os.ReadFile("testdata/network-configuration.json")
-	nodeConfig, _ := os.ReadFile("testdata/node-configuration.json")
-	expected, _ := os.ReadFile("testdata/expected.yaml")
+type testCase struct {
+	name        string
+	clusterFunc func(tc testCase) clusterplugin.Cluster
+}
 
-	cluster := clusterplugin.Cluster{
-		ProviderOptions: map[string]string{
-			domain.CredentialProviderKey:   "iam-ra",
-			domain.KubernetesVersionKey:    "1.30.0",
-			domain.NetworkConfigurationKey: string(netConfig),
-			domain.NodeConfigurationKey:    string(nodeConfig),
+func (t testCase) configs() (string, string) {
+	netConfig, _ := os.ReadFile(filepath.Join("testdata", t.name, "network-configuration.json"))
+	nodeConfig, _ := os.ReadFile(filepath.Join("testdata", t.name, "node-configuration.json"))
+	return string(netConfig), string(nodeConfig)
+}
+
+func (t testCase) expected() string {
+	expected, _ := os.ReadFile(filepath.Join("testdata", t.name, "/expected.yaml"))
+	return string(expected)
+}
+
+func TestNodeadmProvider(t *testing.T) {
+	tests := []testCase{
+		{
+			name: "iam-ra",
+			clusterFunc: func(tc testCase) clusterplugin.Cluster {
+				netConfig, nodeConfig := tc.configs()
+				return clusterplugin.Cluster{
+					ProviderOptions: map[string]string{
+						domain.CredentialProviderKey:   tc.name,
+						domain.KubernetesVersionKey:    "1.30.0",
+						domain.NetworkConfigurationKey: netConfig,
+						domain.NodeConfigurationKey:    nodeConfig,
+					},
+				}
+			},
+		},
+		{
+			name: "ssm",
+			clusterFunc: func(tc testCase) clusterplugin.Cluster {
+				netConfig, nodeConfig := tc.configs()
+				return clusterplugin.Cluster{
+					ProviderOptions: map[string]string{
+						domain.CredentialProviderKey:   tc.name,
+						domain.KubernetesVersionKey:    "1.30.0",
+						domain.NetworkConfigurationKey: netConfig,
+						domain.NodeConfigurationKey:    nodeConfig,
+					},
+				}
+			},
+		},
+		{
+			name: "ssm-custom",
+			clusterFunc: func(tc testCase) clusterplugin.Cluster {
+				netConfig, nodeConfig := tc.configs()
+				return clusterplugin.Cluster{
+					Options: `
+containerd:
+  config: |
+    [plugins."io.containerd.grpc.v1.cri".containerd]
+    discard_unpacked_layers = false
+kubelet:
+  config:
+    shutdownGracePeriod: 30s
+  flags:
+  - --node-labels=abc.company.com/test-label=true`,
+					ProviderOptions: map[string]string{
+						domain.CredentialProviderKey:   tc.name,
+						domain.KubernetesVersionKey:    "1.30.0",
+						domain.NetworkConfigurationKey: netConfig,
+						domain.NodeConfigurationKey:    nodeConfig,
+					},
+				}
+			},
 		},
 	}
-	stages.InitPaths(cluster)
-	schema := NodeadmProvider(cluster)
-	got, _ := kyaml.Marshal(schema)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cluster := tt.clusterFunc(tt)
+			expected := tt.expected()
 
-	if string(got) != string(expected) {
-		_ = os.WriteFile("testdata/got.yaml", got, 0644)
-		t.Errorf("Expected %s, got %s", string(expected), string(got))
+			stages.InitPaths(cluster)
+			schema := NodeadmProvider(cluster)
+			got, _ := kyaml.Marshal(schema)
+
+			if string(got) != expected {
+				_ = os.WriteFile(filepath.Join("testdata", tt.name, "got.yaml"), got, 0644)
+				t.Errorf("Expected %s, got %s", expected, string(got))
+			}
+		})
 	}
 }

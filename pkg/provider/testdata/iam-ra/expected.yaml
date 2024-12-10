@@ -236,17 +236,22 @@ Stages:
     - Content: |
         apiVersion: node.eks.aws/v1alpha1
         kind: NodeConfig
+        metadata:
+          creationTimestamp: null
         spec:
           cluster:
-            name: "eks-hybrid-cluster"
-            region: "us-east-1"
+            name: eks-hybrid-cluster
+            region: us-east-1
+          containerd: {}
           hybrid:
-            nodeName: node02
             iamRolesAnywhere:
-              assumeRoleArn: arn:aws:iam::XXXXXXXXXX:role/hybrid-beta-ira-nodes
-              profileArn: "arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:profile/9762455a-991d-441b-80da-f2c766e445dd"
-              roleArn: "arn:aws:iam::XXXXXXXXXX:role/hybrid-beta-ira-intermediate-role"
-              trustAnchorArn: "arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:trust-anchor/41cf82c1-5b2b-4ee6-a13b-f400e07d6bdc"
+              nodeName: node02
+              profileArn: arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:profile/9762455a-991d-441b-80da-f2c766e445dd
+              roleArn: arn:aws:iam::XXXXXXXXXX:role/hybrid-beta-ira-intermediate-role
+              trustAnchorArn: arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:trust-anchor/41cf82c1-5b2b-4ee6-a13b-f400e07d6bdc
+          instance:
+            localStorage: {}
+          kubelet: {}
       Encoding: ""
       Group: 0
       Owner: 0

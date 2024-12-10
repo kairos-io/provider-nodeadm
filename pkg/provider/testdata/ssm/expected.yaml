@@ -1,0 +1,338 @@
+Name: Kairos Provider Nodeadm
+Source: ""
+Stages:
+  boot.before:
+  - After: null
+    Commands: null
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files:
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/systemd/system/containerd.service.d/http-proxy.conf
+      Permissions: 256
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/systemd/system/kubelet.service.d/http-proxy.conf
+      Permissions: 256
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/apt/apt.conf
+      Permissions: 256
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Set proxy env
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - mkdir -p /etc/iam/pki
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Pre-installation Commands
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadm/scripts/nodeadm-install.sh 1.30.0 ssm /opt/nodeadm false '
+    - touch /opt/nodeadm/nodeadm.install
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ ! -f /opt/nodeadm/nodeadm.install ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Install
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadm/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadm/node-config.yaml
+      /opt/nodeadm false '
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Upgrade
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands: null
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files:
+    - Content: |
+        apiVersion: node.eks.aws/v1alpha1
+        kind: NodeConfig
+        metadata:
+          creationTimestamp: null
+        spec:
+          cluster:
+            name: eks-hybrid-cluster
+            region: us-east-1
+          containerd: {}
+          hybrid:
+            ssm:
+              activationCode: 12345678-1234-1234-1234-123456789012
+              activationId: 12345678-1234-1234-1234-123456789012
+          instance:
+            localStorage: {}
+          kubelet: {}
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /opt/nodeadm/node-config.yaml
+      Permissions: 416
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Generate Nodeadm Init Config File
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadm/scripts/nodeadm-init.sh /opt/nodeadm/node-config.yaml /opt/nodeadm
+      false '
+    - touch /opt/nodeadm/nodeadm.init
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ ! -f /opt/nodeadm/nodeadm.init ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Init
+    Node: ""
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
