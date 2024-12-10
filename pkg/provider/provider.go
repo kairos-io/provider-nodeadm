@@ -11,6 +11,7 @@ import (
 	yip "github.com/mudler/yip/pkg/schema"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
+	kyaml "sigs.k8s.io/yaml"
 
 	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
 	"github.com/spectrocloud/provider-nodeadm/pkg/stages"
@@ -20,14 +21,12 @@ import (
 func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	var nc domain.NodeadmConfig
 
-	// As of now, we don't have any options to unmarshal from the cluster.Options field.
-	// Eventually they may come from the k8s layer of the edge cluster profile if/when
-	// nodeadm supports advanced configuration options for the kubelet, containerd, etc.
-	//
-	// if cluster.Options != "" {
-	// 	userOptions, _ := kyaml.YAMLToJSON([]byte(cluster.Options))
-	// 	_ = json.Unmarshal(userOptions, &nc)
-	// }
+	// Parse containerd and kubelet configuration overrides from the user-provided
+	// cluster options, AKA nodeadm pack values
+	if cluster.Options != "" {
+		userOptions, _ := kyaml.YAMLToJSON([]byte(cluster.Options))
+		_ = json.Unmarshal(userOptions, &nc.NodeConfiguration.UserConfig)
+	}
 
 	// Map provider options into the NodeadmConfig struct
 
