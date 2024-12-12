@@ -8,8 +8,8 @@ import (
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
 	kyaml "sigs.k8s.io/yaml"
 
-	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
-	"github.com/spectrocloud/provider-nodeadm/pkg/stages"
+	"github.com/kairos-io/provider-nodeadm/pkg/domain"
+	"github.com/kairos-io/provider-nodeadm/pkg/stages"
 )
 
 type testCase struct {

@@ -13,8 +13,8 @@ import (
 	"gopkg.in/yaml.v3"
 	kyaml "sigs.k8s.io/yaml"
 
-	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
-	"github.com/spectrocloud/provider-nodeadm/pkg/stages"
+	"github.com/kairos-io/provider-nodeadm/pkg/domain"
+	"github.com/kairos-io/provider-nodeadm/pkg/stages"
 )
 
 // NodeadmProvider is the kairos cluster provider for EKS hybrid edge nodes.
