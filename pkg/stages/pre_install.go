@@ -9,7 +9,7 @@ import (
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
 	yip "github.com/mudler/yip/pkg/schema"
 
-	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
+	"github.com/kairos-io/provider-nodeadm/pkg/domain"
 )
 
 const (
