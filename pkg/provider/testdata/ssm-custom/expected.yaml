@@ -60,12 +60,17 @@ Stages:
     Modules: null
     Name: Set proxy env
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
@@ -108,12 +113,17 @@ Stages:
     Modules: null
     Name: Run Pre-installation Commands
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
@@ -158,12 +168,17 @@ Stages:
     Modules: null
     Name: Run Nodeadm Install
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
@@ -207,12 +222,17 @@ Stages:
     Modules: null
     Name: Run Nodeadm Upgrade
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
@@ -284,12 +304,17 @@ Stages:
     Modules: null
     Name: Generate Nodeadm Init Config File
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
@@ -334,12 +359,17 @@ Stages:
     Modules: null
     Name: Run Nodeadm Init
     Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
     SSHKeys: null
     Sysctl: null
     Systemctl:
       Disable: null
       Enable: null
       Mask: null
+      Overrides: null
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
