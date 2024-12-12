@@ -9,7 +9,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kyaml "sigs.k8s.io/yaml"
 
-	"github.com/spectrocloud/provider-nodeadm/pkg/domain"
+	"github.com/kairos-io/provider-nodeadm/pkg/domain"
 )
 
 const (

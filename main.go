@@ -8,7 +8,7 @@ import (
 	"github.com/mudler/go-pluggable"
 	"github.com/sirupsen/logrus"
 
-	"github.com/spectrocloud/provider-nodeadm/pkg/provider"
+	"github.com/kairos-io/provider-nodeadm/pkg/provider"
 )
 
 func main() {
