@@ -130,9 +130,9 @@ Stages:
     Users: null
   - After: null
     Commands:
-    - 'bash /opt/nodeadm/scripts/nodeadm-install.sh 1.30.0 ssm-custom /opt/nodeadm
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 ssm-custom /opt/nodeadmutil
       false '
-    - touch /opt/nodeadm/nodeadm.install
+    - touch /opt/nodeadmutil/nodeadm.install
     DataSources:
       Path: ""
       Providers: null
@@ -160,7 +160,7 @@ Stages:
       Path: ""
       URL: ""
     Hostname: ""
-    If: '[ ! -f /opt/nodeadm/nodeadm.install ]'
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.install ]'
     Layout:
       Device: null
       Expand: null
@@ -185,8 +185,8 @@ Stages:
     Users: null
   - After: null
     Commands:
-    - 'bash /opt/nodeadm/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadm/node-config.yaml
-      /opt/nodeadm false '
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadmutil/node-config.yaml
+      /opt/nodeadmutil false '
     DataSources:
       Path: ""
       Providers: null
@@ -282,7 +282,7 @@ Stages:
       Group: 0
       Owner: 0
       OwnerString: ""
-      Path: /opt/nodeadm/node-config.yaml
+      Path: /opt/nodeadmutil/node-config.yaml
       Permissions: 416
     Git:
       Auth:
@@ -321,9 +321,9 @@ Stages:
     Users: null
   - After: null
     Commands:
-    - 'bash /opt/nodeadm/scripts/nodeadm-init.sh /opt/nodeadm/node-config.yaml /opt/nodeadm
-      false '
-    - touch /opt/nodeadm/nodeadm.init
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-init.sh /opt/nodeadmutil/node-config.yaml
+      /opt/nodeadmutil false '
+    - touch /opt/nodeadmutil/nodeadm.init
     DataSources:
       Path: ""
       Providers: null
@@ -351,7 +351,7 @@ Stages:
       Path: ""
       URL: ""
     Hostname: ""
-    If: '[ ! -f /opt/nodeadm/nodeadm.init ]'
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.init ]'
     Layout:
       Device: null
       Expand: null

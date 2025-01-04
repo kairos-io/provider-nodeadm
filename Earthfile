@@ -67,7 +67,7 @@ build-provider-package:
     FROM scratch
 
     COPY +build-provider/agent-provider-nodeadm /system/providers/agent-provider-nodeadm
-    COPY scripts/ /opt/nodeadm/scripts/
+    COPY scripts/ /opt/nodeadmutil/scripts/
 
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:latest
     SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:${VERSION}
@@ -121,8 +121,8 @@ docker:
     ENV OS_LABEL=${BASE_IMAGE_TAG}_${NODEADM_VERSION_TAG}_${VERSION}
     RUN envsubst >>/etc/os-release </usr/lib/os-release.tmpl
 
-    RUN mkdir -p /opt/nodeadm/scripts
-    COPY scripts/* /opt/nodeadm/scripts/
+    RUN mkdir -p /opt/nodeadmutil/scripts
+    COPY scripts/* /opt/nodeadmutil/scripts/
 
     COPY +build-provider/agent-provider-nodeadm /system/providers/agent-provider-nodeadm
 
