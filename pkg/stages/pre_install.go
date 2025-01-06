@@ -15,7 +15,7 @@ import (
 const (
 	envPrefix   = "Environment="
 	k8sNoProxy  = ".svc,.svc.cluster,.svc.cluster.local"
-	nodeadmRoot = "/opt/nodeadm"
+	nodeadmRoot = "/opt/nodeadmutil"
 )
 
 var (
