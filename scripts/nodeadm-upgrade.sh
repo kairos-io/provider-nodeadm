@@ -62,8 +62,8 @@ run_upgrade() {
 
     # Backup admin.conf if it exists, as nodeadm upgrade wipes /etc/kubernetes
     if [ -f /etc/kubernetes/admin.conf ]; then
-      cp /etc/kubernetes/admin.conf /tmp/admin.conf.bak
-      echo "backed up /etc/kubernetes/admin.conf to /tmp/admin.conf.bak"
+      cp /etc/kubernetes/admin.conf /opt/nodeadmutil/admin.conf.bak
+      echo "backed up /etc/kubernetes/admin.conf to /opt/nodeadmutil/admin.conf.bak"
     fi
 
     # Upgrade loop, runs until stored and current match
@@ -109,7 +109,7 @@ echo "Re-initializing node"
 bash "$root_path"/scripts/nodeadm-init.sh "$CONFIG_FILE" "$root_path" "$PROXY_CONFIGURED" "$proxy_http" "$proxy_https" "$proxy_no"
 
 # Restore admin.conf if it was backed up
-if [ -f /tmp/admin.conf.bak ]; then
-  mv /tmp/admin.conf.bak /etc/kubernetes/admin.conf
-  echo "restored /etc/kubernetes/admin.conf from /tmp/admin.conf.bak"
+if [ -f /opt/nodeadmutil/admin.conf.bak ]; then
+  mv /opt/nodeadmutil/admin.conf.bak /etc/kubernetes/admin.conf
+  echo "restored /etc/kubernetes/admin.conf from /opt/nodeadmutil/admin.conf.bak"
 fi
