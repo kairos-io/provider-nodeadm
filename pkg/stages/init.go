@@ -18,10 +18,10 @@ const (
 )
 
 // InitYipStages returns the stages required to run 'nodeadm init'.
-func InitYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
+func InitYipStages(nc domain.NodeadmConfig, proxyArgs string, handleDependencies bool) []yip.Stage {
 	return []yip.Stage{
 		initConfigStage(nc),
-		initStage(proxyArgs),
+		initStage(proxyArgs, handleDependencies),
 	}
 }
 
@@ -98,11 +98,16 @@ func toHybridConfig(nc domain.NodeadmConfig) ([]byte, error) {
 	return kyaml.Marshal(nodeConfig)
 }
 
-func initStage(proxyArgs string) yip.Stage {
-	return yip.Stage{
+func initStage(proxyArgs string, handleDependencies bool) yip.Stage {
+	stage := yip.Stage{
 		Name: "Run nodeadm init",
 		Commands: []string{
 			fmt.Sprintf("bash %s %s %s %t %s", initScript, nodeConfigPath, runtimeRoot, len(proxyArgs) > 0, proxyArgs),
 		},
 	}
+	if handleDependencies {
+		stage.If = fmt.Sprintf("[ ! -f %s/nodeadm.init ]", runtimeRoot)
+		stage.Commands = append(stage.Commands, fmt.Sprintf("touch %s/nodeadm.init", runtimeRoot))
+	}
+	return stage
 }

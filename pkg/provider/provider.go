@@ -62,10 +62,11 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	// Dependency configuration
-	handleDependencies, ok := cluster.ProviderOptions[domain.HandleDependenciesKey]
+	handleDependenciesStr, ok := cluster.ProviderOptions[domain.HandleDependenciesKey]
 	if !ok {
 		logrus.Fatalf("missing mandatory provider option %s", domain.HandleDependenciesKey)
 	}
+	handleDependencies := handleDependenciesStr == "true"
 
 	// Generate yip stages
 	stages.InitPaths(cluster)
@@ -81,10 +82,10 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	bootBeforeStages := stages.PreInstallYipStages(cluster.Env, nc)
-	if handleDependencies == "true" {
+	if handleDependencies {
 		bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
 	}
-	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs)...)
+	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs, handleDependencies)...)
 
 	cfg := yip.YipConfig{
 		Name: "Kairos Provider Nodeadm",
