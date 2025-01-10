@@ -130,7 +130,7 @@ Stages:
     Users: null
   - After: null
     Commands:
-    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 ssm-custom /opt/nodeadmutil
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 ssm /opt/nodeadmutil
       false '
     - touch /opt/nodeadmutil/nodeadm.install
     DataSources:
@@ -302,7 +302,7 @@ Stages:
       Expand: null
       Parts: null
     Modules: null
-    Name: Generate Nodeadm Init Config File
+    Name: Generate nodeadm config file
     Node: ""
     Packages:
       Install: null
@@ -323,7 +323,6 @@ Stages:
     Commands:
     - 'bash /opt/nodeadmutil/scripts/nodeadm-init.sh /opt/nodeadmutil/node-config.yaml
       /opt/nodeadmutil false '
-    - touch /opt/nodeadmutil/nodeadm.init
     DataSources:
       Path: ""
       Providers: null
@@ -351,13 +350,13 @@ Stages:
       Path: ""
       URL: ""
     Hostname: ""
-    If: '[ ! -f /opt/nodeadmutil/nodeadm.init ]'
+    If: ""
     Layout:
       Device: null
       Expand: null
       Parts: null
     Modules: null
-    Name: Run Nodeadm Init
+    Name: Run nodeadm init
     Node: ""
     Packages:
       Install: null

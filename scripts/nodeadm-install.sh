@@ -7,11 +7,11 @@ exec 20>> /var/log/nodeadm-install.log
 export BASH_XTRACEFD="20"
 set -ex
 
-KUBERNETES_VERSION=$1
-CREDENTIAL_PROVIDER=$2
+kubernetes_version=$1
+credential_provider=$2
 
 root_path=$3
-PROXY_CONFIGURED=$4
+proxy_configured=$4
 proxy_http=$5
 proxy_https=$6
 proxy_no=$7
@@ -29,13 +29,13 @@ function uninstall_and_retry() {
   sleep 10;
 }
 
-if [ "$PROXY_CONFIGURED" = true ]; then
-  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+if [ "$proxy_configured" = true ]; then
+  until HTTP_PROXY=$proxy_http http_proxy=$proxy_http HTTPS_PROXY=$proxy_https https_proxy=$proxy_https NO_PROXY=$proxy_no no_proxy=$proxy_no nodeadm install $kubernetes_version -p $credential_provider -d > /dev/null
   do
     uninstall_and_retry
   done;
 else
-  until nodeadm install $KUBERNETES_VERSION -p $CREDENTIAL_PROVIDER -d > /dev/null
+  until nodeadm install $kubernetes_version -p $credential_provider -d > /dev/null
   do
     uninstall_and_retry
   done;

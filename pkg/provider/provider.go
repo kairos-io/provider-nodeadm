@@ -61,6 +61,12 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		logrus.Fatalf("failed to unmarshal node configuration %+v: %v", nodeConfig, err)
 	}
 
+	// Dependency configuration
+	handleDependencies, ok := cluster.ProviderOptions[domain.HandleDependenciesKey]
+	if !ok {
+		logrus.Fatalf("missing mandatory provider option %s", domain.HandleDependenciesKey)
+	}
+
 	// Generate yip stages
 	stages.InitPaths(cluster)
 
@@ -75,7 +81,9 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	bootBeforeStages := stages.PreInstallYipStages(cluster.Env, nc)
-	bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
+	if handleDependencies == "true" {
+		bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
+	}
 	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs)...)
 
 	cfg := yip.YipConfig{

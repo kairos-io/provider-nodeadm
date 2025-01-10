@@ -32,7 +32,7 @@ func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
 	}
 
 	initConfigStage := yip.Stage{
-		Name: "Generate Nodeadm Init Config File",
+		Name: "Generate nodeadm config file",
 		Files: []yip.File{
 			{
 				Path:        nodeConfigPath,
@@ -100,11 +100,9 @@ func toHybridConfig(nc domain.NodeadmConfig) ([]byte, error) {
 
 func initStage(proxyArgs string) yip.Stage {
 	return yip.Stage{
-		Name: "Run Nodeadm Init",
-		If:   fmt.Sprintf("[ ! -f %s/nodeadm.init ]", runtimeRoot),
+		Name: "Run nodeadm init",
 		Commands: []string{
 			fmt.Sprintf("bash %s %s %s %t %s", initScript, nodeConfigPath, runtimeRoot, len(proxyArgs) > 0, proxyArgs),
-			fmt.Sprintf("touch %s/nodeadm.init", runtimeRoot),
 		},
 	}
 }
