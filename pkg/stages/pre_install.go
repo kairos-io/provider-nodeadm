@@ -19,9 +19,9 @@ const (
 )
 
 var (
-	initScript, installScript, resetScript, upgradeScript string
-	nodeConfigPath                                        string
-	runtimeRoot                                           string
+	initScript, resetScript string
+	nodeConfigPath          string
+	runtimeRoot             string
 )
 
 // InitPaths initializes all nodeadm paths relative to the cluster's root path.
@@ -33,9 +33,7 @@ func InitPaths(cluster clusterplugin.Cluster) {
 	nodeConfigPath = filepath.Join(runtimeRoot, nodeConfigFile)
 
 	initScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-init.sh")
-	installScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-install.sh")
 	resetScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-reset.sh")
-	upgradeScript = filepath.Join(clusterRootPath, nodeadmRoot, "scripts", "nodeadm-upgrade.sh")
 }
 
 func clusterRootPath(cluster clusterplugin.Cluster) string {
@@ -78,11 +76,6 @@ func proxyStage(nc domain.NodeadmConfig, env map[string]string) yip.Stage {
 				Permissions: 0400,
 				Content:     daemonProxyEnv,
 			},
-			{
-				Path:        filepath.Join("/etc/apt", "apt.conf"),
-				Permissions: 0400,
-				Content:     aptProxyEnv(env),
-			},
 		},
 	}
 }
@@ -110,24 +103,6 @@ func daemonProxyEnv(env map[string]string, nc domain.NetworkConfig) string {
 		}
 
 		proxy = append(proxy, fmt.Sprintf("%s\"NO_PROXY=%s\"", envPrefix, noProxy))
-	}
-
-	return strings.Join(proxy, "\n")
-}
-
-func aptProxyEnv(env map[string]string) string {
-	var proxy []string
-
-	httpProxy := env["HTTP_PROXY"]
-	httpsProxy := env["HTTPS_PROXY"]
-
-	if IsProxyConfigured(env) {
-		if len(httpProxy) > 0 {
-			proxy = append(proxy, fmt.Sprintf("Acquire::http::Proxy \"%s\";", httpProxy))
-		}
-		if len(httpsProxy) > 0 {
-			proxy = append(proxy, fmt.Sprintf("Acquire::https::Proxy \"%s\";", httpsProxy))
-		}
 	}
 
 	return strings.Join(proxy, "\n")

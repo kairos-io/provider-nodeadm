@@ -101,10 +101,8 @@ func toHybridConfig(nc domain.NodeadmConfig) ([]byte, error) {
 func initStage(proxyArgs string) yip.Stage {
 	return yip.Stage{
 		Name: "Run Nodeadm Init",
-		If:   fmt.Sprintf("[ ! -f %s/nodeadm.init ]", runtimeRoot),
 		Commands: []string{
 			fmt.Sprintf("bash %s %s %s %t %s", initScript, nodeConfigPath, runtimeRoot, len(proxyArgs) > 0, proxyArgs),
-			fmt.Sprintf("touch %s/nodeadm.init", runtimeRoot),
 		},
 	}
 }

@@ -75,7 +75,6 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 	}
 
 	bootBeforeStages := stages.PreInstallYipStages(cluster.Env, nc)
-	bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
 	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs)...)
 
 	cfg := yip.YipConfig{
