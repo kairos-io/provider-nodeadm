@@ -17,8 +17,8 @@ const (
 	nodeConfigTemplate = "node-config.tmpl"
 )
 
-// InitYipStages returns the stages required to run 'nodeadm init'.
-func InitYipStages(nc domain.NodeadmConfig, proxyArgs string, handleDependencies bool) []yip.Stage {
+// InitBootBeforeStages returns the boot.before stages required to run 'nodeadm init'.
+func InitBootBeforeStages(nc domain.NodeadmConfig, proxyArgs string, handleDependencies bool) []yip.Stage {
 	return []yip.Stage{
 		initConfigStage(nc),
 		initStage(proxyArgs, handleDependencies),
@@ -110,4 +110,24 @@ func initStage(proxyArgs string, handleDependencies bool) yip.Stage {
 		stage.Commands = append(stage.Commands, fmt.Sprintf("touch %s/nodeadm.init", runtimeRoot))
 	}
 	return stage
+}
+
+// InitFSAfterStages returns the fs.after stages required to run 'nodeadm init'.
+func InitFSAfterStages() []yip.Stage {
+	return []yip.Stage{
+		{
+			If:   "[ ! -f /usr/local/bin/aws-iam-authenticator ]",
+			Name: "Symlink aws-iam-authenticator",
+			Commands: []string{
+				"ln -s /usr/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator",
+			},
+		},
+		{
+			If:   "[ ! -f /usr/local/bin/aws_signing_helper ]",
+			Name: "Symlink aws_signing_helper",
+			Commands: []string{
+				"ln -s /usr/bin/aws_signing_helper /usr/local/bin/aws_signing_helper",
+			},
+		},
+	}
 }

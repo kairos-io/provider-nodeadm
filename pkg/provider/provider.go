@@ -81,16 +81,17 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		)
 	}
 
-	bootBeforeStages := stages.PreInstallYipStages(cluster.Env, nc)
+	bootBeforeStages := stages.PreInstallBootBeforeStages(cluster.Env, nc)
 	if handleDependencies {
-		bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
+		bootBeforeStages = append(bootBeforeStages, stages.InstallBootBeforeStages(nc, proxyArgs)...)
 	}
-	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs, handleDependencies)...)
+	bootBeforeStages = append(bootBeforeStages, stages.InitBootBeforeStages(nc, proxyArgs, handleDependencies)...)
 
 	cfg := yip.YipConfig{
 		Name: "Kairos Provider Nodeadm",
 		Stages: map[string][]yip.Stage{
 			"boot.before": bootBeforeStages,
+			"fs.after":    stages.InitFSAfterStages(),
 		},
 	}
 
