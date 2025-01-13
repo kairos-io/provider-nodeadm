@@ -323,6 +323,7 @@ Stages:
     Commands:
     - 'bash /opt/nodeadmutil/scripts/nodeadm-init.sh /opt/nodeadmutil/node-config.yaml
       /opt/nodeadmutil false '
+    - touch /opt/nodeadmutil/nodeadm.init
     DataSources:
       Path: ""
       Providers: null
@@ -350,13 +351,122 @@ Stages:
       Path: ""
       URL: ""
     Hostname: ""
-    If: ""
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.init ]'
     Layout:
       Device: null
       Expand: null
       Parts: null
     Modules: null
     Name: Run nodeadm init
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  fs.after:
+  - After: null
+    Commands:
+    - ln -s /usr/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ -f /usr/bin/aws-iam-authenticator ] && [ ! -f /usr/local/bin/aws-iam-authenticator
+      ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Symlink aws-iam-authenticator
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - ln -s /usr/bin/aws_signing_helper /usr/local/bin/aws_signing_helper
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ -f /usr/bin/aws_signing_helper ] && [ ! -f /usr/local/bin/aws_signing_helper
+      ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Symlink aws_signing_helper
     Node: ""
     Packages:
       Install: null
