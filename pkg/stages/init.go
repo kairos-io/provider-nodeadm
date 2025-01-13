@@ -113,17 +113,18 @@ func initStage(proxyArgs string, handleDependencies bool) yip.Stage {
 }
 
 // InitFSAfterStages returns the fs.after stages required to run 'nodeadm init'.
+// These stages are only expected to run in appliance mode.
 func InitFSAfterStages() []yip.Stage {
 	return []yip.Stage{
 		{
-			If:   "[ ! -f /usr/local/bin/aws-iam-authenticator ]",
+			If:   "[ -f /usr/bin/aws-iam-authenticator ] && [ ! -f /usr/local/bin/aws-iam-authenticator ]",
 			Name: "Symlink aws-iam-authenticator",
 			Commands: []string{
 				"ln -s /usr/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator",
 			},
 		},
 		{
-			If:   "[ ! -f /usr/local/bin/aws_signing_helper ]",
+			If:   "[ -f /usr/bin/aws_signing_helper ] && [ ! -f /usr/local/bin/aws_signing_helper ]",
 			Name: "Symlink aws_signing_helper",
 			Commands: []string{
 				"ln -s /usr/bin/aws_signing_helper /usr/local/bin/aws_signing_helper",
