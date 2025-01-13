@@ -18,6 +18,7 @@ function uninstall() {
 
   rm -rf $root_path/nodeadm.init
   rm -rf $root_path/nodeadm.install
+  rm -rf $root_path/node-config.yaml
   rm -rf $root_path/sentinel_kubernetes_version
 
   rm -rf /var/log/containers

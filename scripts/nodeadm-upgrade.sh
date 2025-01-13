@@ -7,11 +7,11 @@ exec 22>> /var/log/nodeadm-upgrade.log
 export BASH_XTRACEFD="22"
 set -ex
 
-KUBERNETES_VERSION=$1
-CONFIG_FILE=$2
+kubernetes_version=$1
+config_file=$2
 
 root_path=$3
-PROXY_CONFIGURED=$4
+proxy_configured=$4
 proxy_http=$5
 proxy_https=$6
 proxy_no=$7
@@ -35,21 +35,21 @@ fi
 
 export KUBECONFIG=/var/lib/kubelet/kubeconfig
 
-CURRENT_NODE_NAME=$(cat /etc/hostname)
+current_node_name=$(cat /etc/hostname)
 
 run_upgrade() {
-    echo "running upgrade process on $CURRENT_NODE_NAME"
+    echo "running upgrade process on $current_node_name"
 
     if ! [ -f "$root_path/sentinel_kubernetes_version" ]; then
-      echo "$KUBERNETES_VERSION" > "$root_path/sentinel_kubernetes_version"
-      echo "upgrade is a no-op; created sentinel file with version: $KUBERNETES_VERSION"
+      echo "$kubernetes_version" > "$root_path/sentinel_kubernetes_version"
+      echo "upgrade is a no-op; created sentinel file with version: $kubernetes_version"
       exit 0
     fi
 
     old_version=$(cat "$root_path/sentinel_kubernetes_version")
     echo "found last deployed version $old_version"
 
-    current_version=$KUBERNETES_VERSION
+    current_version=$kubernetes_version
     echo "found current deployed version $current_version"
 
     # Check if the current nodeadm version is equal to the stored nodeadm version.
@@ -69,17 +69,17 @@ run_upgrade() {
     # Upgrade loop, runs until stored and current match
     until [ "$current_version" = "$old_version" ]
     do
-        upgrade_command="nodeadm upgrade -c file://$CONFIG_FILE -d $KUBERNETES_VERSION --skip pod-validation"
+        upgrade_command="nodeadm upgrade -c file://$config_file -d $kubernetes_version --skip pod-validation"
 
-        if [ "$PROXY_CONFIGURED" = true ]; then
-          up=("nodeadm upgrade -c file://$CONFIG_FILE -d $KUBERNETES_VERSION --skip pod-validation")
+        if [ "$proxy_configured" = true ]; then
+          up=("nodeadm upgrade -c file://$config_file -d $kubernetes_version --skip pod-validation")
           upgrade_command="${up[*]}"
         fi
 
         echo "upgrading node from $old_version to $current_version using command: $upgrade_command"
 
         # Update current kubernetes version
-        if [ "$PROXY_CONFIGURED" = true ]; then
+        if [ "$proxy_configured" = true ]; then
           if sudo -E bash -c "$upgrade_command"
           then
               echo "$current_version" > "$root_path/sentinel_kubernetes_version"
@@ -106,7 +106,7 @@ run_upgrade() {
 run_upgrade
 
 echo "Re-initializing node"
-bash "$root_path"/scripts/nodeadm-init.sh "$CONFIG_FILE" "$root_path" "$PROXY_CONFIGURED" "$proxy_http" "$proxy_https" "$proxy_no"
+bash "$root_path"/scripts/nodeadm-init.sh "$config_file" "$root_path" "$proxy_configured" "$proxy_http" "$proxy_https" "$proxy_no"
 
 # Restore admin.conf if it was backed up
 if [ -f /opt/nodeadmutil/admin.conf.bak ]; then

@@ -8,8 +8,8 @@ import (
 	"github.com/kairos-io/provider-nodeadm/pkg/domain"
 )
 
-// InstallYipStages returns the stages required to run 'nodeadm install' and 'nodeadm upgrade'.
-func InstallYipStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
+// InstallBootBeforeStages returns the boot.before stages required to run 'nodeadm install' and 'nodeadm upgrade'.
+func InstallBootBeforeStages(nc domain.NodeadmConfig, proxyArgs string) []yip.Stage {
 	return []yip.Stage{
 		installStage(nc, proxyArgs),
 		upgradeStage(nc, proxyArgs),

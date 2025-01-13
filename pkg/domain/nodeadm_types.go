@@ -21,6 +21,10 @@ const (
 
 	// NodeConfigurationKey is the key for the configuration of the hybrid edge node.
 	NodeConfigurationKey string = "nodeConfiguration"
+
+	// HandleDependenciesKey is the key for configuring dependency installation/upgrade.
+	// If set to "true", nodeadm install and upgrade will be invoked. Otherwise, only nodeadm init will be invoked.
+	HandleDependenciesKey string = "handleDependencies"
 )
 
 // CredentialProvider is the AWS credential provider type.

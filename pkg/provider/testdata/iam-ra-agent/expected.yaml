@@ -1,0 +1,522 @@
+Name: Kairos Provider Nodeadm
+Source: ""
+Stages:
+  boot.before:
+  - After: null
+    Commands: null
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files:
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/systemd/system/containerd.service.d/http-proxy.conf
+      Permissions: 256
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/systemd/system/kubelet.service.d/http-proxy.conf
+      Permissions: 256
+    - Content: ""
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/apt/apt.conf
+      Permissions: 256
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Set proxy env
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - mkdir -p /etc/iam/pki
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Pre-installation Commands
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 iam-ra /opt/nodeadmutil
+      false '
+    - touch /opt/nodeadmutil/nodeadm.install
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.install ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Install
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadmutil/node-config.yaml
+      /opt/nodeadmutil false '
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Upgrade
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands: null
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files:
+    - Content: |
+        apiVersion: node.eks.aws/v1alpha1
+        kind: NodeConfig
+        metadata:
+          creationTimestamp: null
+        spec:
+          cluster:
+            name: eks-hybrid-cluster
+            region: us-east-1
+          containerd: {}
+          hybrid:
+            iamRolesAnywhere:
+              nodeName: node02
+              profileArn: arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:profile/9762455a-991d-441b-80da-f2c766e445dd
+              roleArn: arn:aws:iam::XXXXXXXXXX:role/hybrid-beta-ira-intermediate-role
+              trustAnchorArn: arn:aws:rolesanywhere:us-east-1:XXXXXXXXXX:trust-anchor/41cf82c1-5b2b-4ee6-a13b-f400e07d6bdc
+          instance:
+            localStorage: {}
+          kubelet: {}
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /opt/nodeadmutil/node-config.yaml
+      Permissions: 416
+    - Content: |
+        -----BEGIN CERTIFICATE-----
+        MIIDHTCCAYWgAwIBAgIUfY+TiLlcw7DtmbeAKbVvyiGwaCowDQYJKoZIhvcNAQEN
+        BQAwFjEUMBIGA1UEAwwLQ3VzdG9tIFJvb3QwHhcNMjQwODEyMjIxODI3WhcNMjUw
+        ODEyMjIxODI3WjBHMQswCQYDVQQGEwJVUzEMMAoGA1UECgwDQVdTMQ8wDQYDVQQD
+        DAZub2RlMDIxGTAXBgNVBAsMEFlvdXJPcmdhbml6YXRpb24wdjAQBgcqhkjOPQIB
+        BgUrgQQAIgNiAAS0/lyCNvVWs1h3TF6DLS2ITbGZqLQhIthCY3F19+Raw2zlegxZ
+        NMGYVHbvO7/SP4OpIqSZPV/vCuWpTvvE7vTu4wByB0eP1SPkprY91dFuwzHjfhNf
+        NxDTfk65CDerebejYDBeMAwGA1UdEwEB/wQCMAAwDgYDVR0PAQH/BAQDAgeAMB0G
+        A1UdDgQWBBTNsM1wgratyposLvxMzMZVwS4HKjAfBgNVHSMEGDAWgBQ2R78fB0bm
+        ar7+k2f+CYKXtE/OVzANBgkqhkiG9w0BAQ0FAAOCAYEAAD5JysyU+dAIuO/GIANv
+        PEKZJciVJcmTMBa5Vof7B6Swcb0HmCsMtRGi6k+fjsMXQRqKMBgdR/aSmYSRmt+T
+        kLhGa2rz23vZpTiS4aAkvgD+5PdODwxRuJuMEit5Y1fvFgsPqSPmGJN00/wQE7Us
+        U5KGIiMnEnQNRe3UWPbIHydLhbLZiYxIkYgUYvk2e1kyGK8Z1OGGhOorgyoC20Xy
+        QQxspxlhCdXQ2TBpYC/QcOH0Hb9gpaMCLB9svu4GnDRsJ3xhlABIxrhSb7o9YQ0/
+        xM1k5+BzIpahnNrLaX6fj/fo+g5Rshuh9wvu99+rLbwml+0sRUREc3tt9Ihbr+kV
+        mwR/EIkX0DZi0eKktbolTlWzh884L8KMWHQYIklcR0XQyMUvk22fBSs0lFdVY+F5
+        7nSOtoYboIpzdq8HyhmJE06eGZHNfL7ilz5A9DOeazQB56SZwybgw/DbWeJ7Y1sE
+        /vBGTb2QJD3u80+XZHfxEZQBLN5MoEZgmFNZi+gtuS5B
+        -----END CERTIFICATE-----
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/iam/pki/server.pem
+      Permissions: 384
+    - Content: |
+        -----BEGIN EC PARAMETERS-----
+        BgUrgQQAIg==
+        -----END EC PARAMETERS-----
+        -----BEGIN EC PRIVATE KEY-----
+        MIGkAgEBBDC9rIuTyPDAlF5PlIVcr5zkiDbfYZpU1KFUULgq4+BQWAs/UWNbLf7O
+        dbiTybckk++gBwYFK4EEACKhZANiAAS0/lyCNvVWs1h3TF6DLS2ITbGZqLQhIthC
+        Y3F19+Raw2zlegxZNMGYVHbvO7/SP4OpIqSZPV/vCuWpTvvE7vTu4wByB0eP1SPk
+        prY91dFuwzHjfhNfNxDTfk65CDerebc=
+        -----END EC PRIVATE KEY-----
+      Encoding: ""
+      Group: 0
+      Owner: 0
+      OwnerString: ""
+      Path: /etc/iam/pki/server.key
+      Permissions: 256
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Generate nodeadm config file
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-init.sh /opt/nodeadmutil/node-config.yaml
+      /opt/nodeadmutil false '
+    - touch /opt/nodeadmutil/nodeadm.init
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.init ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run nodeadm init
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  fs.after:
+  - After: null
+    Commands:
+    - ln -s /usr/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ -f /usr/bin/aws-iam-authenticator ] && [ ! -f /usr/local/bin/aws-iam-authenticator
+      ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Symlink aws-iam-authenticator
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
+  - After: null
+    Commands:
+    - ln -s /usr/bin/aws_signing_helper /usr/local/bin/aws_signing_helper
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ -f /usr/bin/aws_signing_helper ] && [ ! -f /usr/local/bin/aws_signing_helper
+      ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Symlink aws_signing_helper
+    Node: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    Users: null
