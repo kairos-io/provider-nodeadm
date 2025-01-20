@@ -43,7 +43,7 @@ run_upgrade() {
     if ! [ -f "$root_path/sentinel_kubernetes_version" ]; then
       echo "$kubernetes_version" > "$root_path/sentinel_kubernetes_version"
       echo "upgrade is a no-op; created sentinel file with version: $kubernetes_version"
-      exit 0
+      return
     fi
 
     old_version=$(cat "$root_path/sentinel_kubernetes_version")
@@ -57,7 +57,7 @@ run_upgrade() {
     if [ "$current_version" = "$old_version" ]
     then
       echo "node is on latest version: $current_version"
-      exit 0
+      return
     fi
 
     # Backup admin.conf if it exists, as nodeadm upgrade wipes /etc/kubernetes
