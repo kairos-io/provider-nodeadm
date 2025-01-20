@@ -60,10 +60,15 @@ Stages:
     Modules: null
     Name: Set proxy env
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -74,6 +79,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands:
@@ -113,10 +119,15 @@ Stages:
     Modules: null
     Name: Run Pre-installation Commands
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -127,6 +138,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands:
@@ -168,10 +180,15 @@ Stages:
     Modules: null
     Name: Run Nodeadm Install
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -182,6 +199,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands:
@@ -222,10 +240,15 @@ Stages:
     Modules: null
     Name: Run Nodeadm Upgrade
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -236,6 +259,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands: null
@@ -304,10 +328,15 @@ Stages:
     Modules: null
     Name: Generate nodeadm config file
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -318,6 +347,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands:
@@ -359,10 +389,15 @@ Stages:
     Modules: null
     Name: Run nodeadm init
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -373,6 +408,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   fs.after:
   - After: null
@@ -414,10 +450,15 @@ Stages:
     Modules: null
     Name: Symlink aws-iam-authenticator
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -428,6 +469,7 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
   - After: null
     Commands:
@@ -468,10 +510,15 @@ Stages:
     Modules: null
     Name: Symlink aws_signing_helper
     Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
     Packages:
       Install: null
       Refresh: false
       Remove: null
+      Upgrade: false
     SSHKeys: null
     Sysctl: null
     Systemctl:
@@ -482,4 +529,5 @@ Stages:
       Start: null
     SystemdFirstBoot: null
     TimeSyncd: null
+    UnpackImages: null
     Users: null
