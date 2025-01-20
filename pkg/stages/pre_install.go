@@ -15,7 +15,7 @@ import (
 const (
 	envPrefix   = "Environment="
 	k8sNoProxy  = ".svc,.svc.cluster,.svc.cluster.local"
-	nodeadmRoot = "/opt/nodeadm"
+	nodeadmRoot = "/opt/nodeadmutil"
 )
 
 var (
@@ -46,8 +46,8 @@ func clusterRootPath(cluster clusterplugin.Cluster) string {
 	return rootpath
 }
 
-// PreInstallYipStages returns the setup stages required prior to running 'nodeadm install'.
-func PreInstallYipStages(env map[string]string, nc domain.NodeadmConfig) []yip.Stage {
+// PreInstallBootBeforeStages returns the setup stages required during boot.before, prior to running 'nodeadm install'.
+func PreInstallBootBeforeStages(env map[string]string, nc domain.NodeadmConfig) []yip.Stage {
 	return []yip.Stage{
 		proxyStage(nc, env),
 		commandsStage(),

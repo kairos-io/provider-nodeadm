@@ -31,35 +31,52 @@ func (t testCase) expected() string {
 func TestNodeadmProvider(t *testing.T) {
 	tests := []testCase{
 		{
-			name: "iam-ra",
+			name: "iam-ra-agent",
 			clusterFunc: func(tc testCase) clusterplugin.Cluster {
 				netConfig, nodeConfig := tc.configs()
 				return clusterplugin.Cluster{
 					ProviderOptions: map[string]string{
-						domain.CredentialProviderKey:   tc.name,
+						domain.CredentialProviderKey:   string(domain.CredentialProviderIAMRolesAnywhere),
 						domain.KubernetesVersionKey:    "1.30.0",
 						domain.NetworkConfigurationKey: netConfig,
 						domain.NodeConfigurationKey:    nodeConfig,
+						domain.HandleDependenciesKey:   "true",
 					},
 				}
 			},
 		},
 		{
-			name: "ssm",
+			name: "iam-ra-appliance",
 			clusterFunc: func(tc testCase) clusterplugin.Cluster {
 				netConfig, nodeConfig := tc.configs()
 				return clusterplugin.Cluster{
 					ProviderOptions: map[string]string{
-						domain.CredentialProviderKey:   tc.name,
+						domain.CredentialProviderKey:   string(domain.CredentialProviderIAMRolesAnywhere),
 						domain.KubernetesVersionKey:    "1.30.0",
 						domain.NetworkConfigurationKey: netConfig,
 						domain.NodeConfigurationKey:    nodeConfig,
+						domain.HandleDependenciesKey:   "false",
 					},
 				}
 			},
 		},
 		{
-			name: "ssm-custom",
+			name: "ssm-agent",
+			clusterFunc: func(tc testCase) clusterplugin.Cluster {
+				netConfig, nodeConfig := tc.configs()
+				return clusterplugin.Cluster{
+					ProviderOptions: map[string]string{
+						domain.CredentialProviderKey:   string(domain.CredentialProviderSystemsManager),
+						domain.KubernetesVersionKey:    "1.30.0",
+						domain.NetworkConfigurationKey: netConfig,
+						domain.NodeConfigurationKey:    nodeConfig,
+						domain.HandleDependenciesKey:   "true",
+					},
+				}
+			},
+		},
+		{
+			name: "ssm-custom-agent",
 			clusterFunc: func(tc testCase) clusterplugin.Cluster {
 				netConfig, nodeConfig := tc.configs()
 				return clusterplugin.Cluster{
@@ -74,10 +91,11 @@ kubelet:
   flags:
   - --node-labels=abc.company.com/test-label=true`,
 					ProviderOptions: map[string]string{
-						domain.CredentialProviderKey:   tc.name,
+						domain.CredentialProviderKey:   string(domain.CredentialProviderSystemsManager),
 						domain.KubernetesVersionKey:    "1.30.0",
 						domain.NetworkConfigurationKey: netConfig,
 						domain.NodeConfigurationKey:    nodeConfig,
+						domain.HandleDependenciesKey:   "true",
 					},
 				}
 			},

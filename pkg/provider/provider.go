@@ -61,6 +61,13 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		logrus.Fatalf("failed to unmarshal node configuration %+v: %v", nodeConfig, err)
 	}
 
+	// Dependency configuration
+	handleDependenciesStr, ok := cluster.ProviderOptions[domain.HandleDependenciesKey]
+	if !ok {
+		logrus.Fatalf("missing mandatory provider option %s", domain.HandleDependenciesKey)
+	}
+	handleDependencies := handleDependenciesStr == "true"
+
 	// Generate yip stages
 	stages.InitPaths(cluster)
 
@@ -74,14 +81,17 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		)
 	}
 
-	bootBeforeStages := stages.PreInstallYipStages(cluster.Env, nc)
-	bootBeforeStages = append(bootBeforeStages, stages.InstallYipStages(nc, proxyArgs)...)
-	bootBeforeStages = append(bootBeforeStages, stages.InitYipStages(nc, proxyArgs)...)
+	bootBeforeStages := stages.PreInstallBootBeforeStages(cluster.Env, nc)
+	if handleDependencies {
+		bootBeforeStages = append(bootBeforeStages, stages.InstallBootBeforeStages(nc, proxyArgs)...)
+	}
+	bootBeforeStages = append(bootBeforeStages, stages.InitBootBeforeStages(nc, proxyArgs, handleDependencies)...)
 
 	cfg := yip.YipConfig{
 		Name: "Kairos Provider Nodeadm",
 		Stages: map[string][]yip.Stage{
 			"boot.before": bootBeforeStages,
+			"fs.after":    stages.InitFSAfterStages(),
 		},
 	}
 
