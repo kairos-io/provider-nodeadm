@@ -2,15 +2,15 @@ module github.com/kairos-io/provider-nodeadm
 
 go 1.23.1
 
-toolchain go1.23.4
+toolchain go1.23.5
 
 require (
-	github.com/aws/eks-hybrid v1.0.0
-	github.com/kairos-io/kairos-sdk v0.6.1
-	github.com/mudler/yip v1.13.0
+	github.com/aws/eks-hybrid v1.0.1
+	github.com/kairos-io/kairos-sdk v0.7.2
+	github.com/mudler/yip v1.14.1
 	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.32.0
+	k8s.io/apimachinery v0.32.1
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -23,8 +23,8 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	golang.org/x/net v0.30.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
@@ -39,12 +39,12 @@ require (
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
-	github.com/itchyny/gojq v0.12.16 // indirect
+	github.com/itchyny/gojq v0.12.17 // indirect
 	github.com/itchyny/timefmt-go v0.1.6 // indirect
 	github.com/mudler/go-pluggable v0.0.0-20230126220627-7710299a0ae5
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/twpayne/go-vfs/v4 v4.3.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
