@@ -8,7 +8,7 @@ require (
 	github.com/aws/eks-hybrid v1.0.1
 	github.com/kairos-io/kairos-sdk v0.7.2
 	github.com/mudler/yip v1.14.1
-	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af
+	github.com/sirupsen/logrus v1.9.4-0.20241118143825-d1e633264448
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/apimachinery v0.32.1
 	sigs.k8s.io/yaml v1.4.0
