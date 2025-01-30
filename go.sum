@@ -1,5 +1,5 @@
-github.com/aws/eks-hybrid v1.0.1 h1:ae6ZBWWwfnvSVYWK8+zENpIjvcp97+sy+2db/+cCdUo=
-github.com/aws/eks-hybrid v1.0.1/go.mod h1:sZqmOVuQmiFxSEsZAwvxIfsJONQ0/rBRUWvRiIgR2/s=
+github.com/aws/eks-hybrid v1.0.2 h1:UDdosDEvNm4DvX9xdKWUY39+x7YKi+d6KhOp8RpL6Vs=
+github.com/aws/eks-hybrid v1.0.2/go.mod h1:m1LbyAY4hE3wLmNyn7qsvPcYP65px9RxNTVTjZTqORY=
 github.com/chuckpreslar/emission v0.0.0-20170206194824-a7ddd980baf9 h1:xz6Nv3zcwO2Lila35hcb0QloCQsc38Al13RNEzWRpX4=
 github.com/chuckpreslar/emission v0.0.0-20170206194824-a7ddd980baf9/go.mod h1:2wSM9zJkl1UQEFZgSd68NfCgRz1VL1jzy/RjCg+ULrs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
