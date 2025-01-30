@@ -5,7 +5,7 @@ go 1.23.1
 toolchain go1.23.5
 
 require (
-	github.com/aws/eks-hybrid v1.0.1
+	github.com/aws/eks-hybrid v1.0.2
 	github.com/kairos-io/kairos-sdk v0.7.2
 	github.com/mudler/yip v1.14.1
 	github.com/sirupsen/logrus v1.9.4-0.20241118143825-d1e633264448
