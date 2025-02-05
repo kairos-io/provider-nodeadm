@@ -6,16 +6,21 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/aws/eks-hybrid/api/v1alpha1"
 	"github.com/kairos-io/kairos-sdk/clusterplugin"
 	yip "github.com/mudler/yip/pkg/schema"
+	"github.com/sirupsen/logrus"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kyaml "sigs.k8s.io/yaml"
 
 	"github.com/kairos-io/provider-nodeadm/pkg/domain"
 )
 
 const (
-	envPrefix   = "Environment="
-	k8sNoProxy  = ".svc,.svc.cluster,.svc.cluster.local"
-	nodeadmRoot = "/opt/nodeadmutil"
+	envPrefix      = "Environment="
+	k8sNoProxy     = ".svc,.svc.cluster,.svc.cluster.local"
+	nodeConfigFile = "node-config.yaml"
+	nodeadmRoot    = "/opt/nodeadmutil"
 )
 
 var (
@@ -51,6 +56,7 @@ func PreInstallBootBeforeStages(env map[string]string, nc domain.NodeadmConfig) 
 	return []yip.Stage{
 		proxyStage(nc, env),
 		commandsStage(),
+		initConfigStage(nc),
 	}
 }
 
@@ -61,6 +67,79 @@ func commandsStage() yip.Stage {
 			"mkdir -p /etc/iam/pki",
 		},
 	}
+}
+
+func initConfigStage(nc domain.NodeadmConfig) yip.Stage {
+	bs, err := toHybridConfig(nc)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
+	initConfigStage := yip.Stage{
+		Name: "Generate nodeadm config file",
+		Files: []yip.File{
+			{
+				Path:        nodeConfigPath,
+				Permissions: 0640,
+				Content:     string(bs),
+			},
+		},
+	}
+
+	if nc.NodeConfiguration.IAMRolesAnywhere != nil {
+		initConfigStage.Files = append(initConfigStage.Files, []yip.File{
+			{
+				Path:        "/etc/iam/pki/server.pem",
+				Permissions: 0600,
+				Content:     nc.NodeConfiguration.IAMRolesAnywhere.Certificate,
+			},
+			{
+				Path:        "/etc/iam/pki/server.key",
+				Permissions: 0400,
+				Content:     nc.NodeConfiguration.IAMRolesAnywhere.PrivateKey,
+			},
+		}...)
+	}
+
+	return initConfigStage
+}
+
+func toHybridConfig(nc domain.NodeadmConfig) ([]byte, error) {
+	nodeConfig := v1alpha1.NodeConfig{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "node.eks.aws/v1alpha1",
+			Kind:       "NodeConfig",
+		},
+		ObjectMeta: metav1.ObjectMeta{},
+		Spec: v1alpha1.NodeConfigSpec{
+			Cluster: v1alpha1.ClusterDetails{
+				Name:   nc.NodeConfiguration.ClusterName,
+				Region: nc.NodeConfiguration.Region,
+			},
+			Hybrid: &v1alpha1.HybridOptions{
+				EnableCredentialsFile: false,
+			},
+		},
+	}
+	if nc.NodeConfiguration.UserConfig != nil {
+		nodeConfig.Spec.Containerd = nc.NodeConfiguration.UserConfig.Containerd
+		nodeConfig.Spec.Kubelet = nc.NodeConfiguration.UserConfig.Kubelet
+	}
+	if nc.NodeConfiguration.IAMRolesAnywhere != nil && nc.NodeConfiguration.IAMRolesAnywhere.RoleARN != "" {
+		nodeConfig.Spec.Hybrid.IAMRolesAnywhere = &v1alpha1.IAMRolesAnywhere{
+			NodeName:       nc.NodeConfiguration.IAMRolesAnywhere.NodeName,
+			TrustAnchorARN: nc.NodeConfiguration.IAMRolesAnywhere.TrustAnchorARN,
+			ProfileARN:     nc.NodeConfiguration.IAMRolesAnywhere.ProfileARN,
+			RoleARN:        nc.NodeConfiguration.IAMRolesAnywhere.RoleARN,
+		}
+	}
+	if nc.NodeConfiguration.SSM != nil && nc.NodeConfiguration.SSM.ActivationCode != "" {
+		nodeConfig.Spec.Hybrid.SSM = &v1alpha1.SSM{
+			ActivationCode: nc.NodeConfiguration.SSM.ActivationCode,
+			ActivationID:   nc.NodeConfiguration.SSM.ActivationID,
+		}
+	}
+	return kyaml.Marshal(nodeConfig)
 }
 
 func proxyStage(nc domain.NodeadmConfig, env map[string]string) yip.Stage {

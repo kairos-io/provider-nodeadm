@@ -81,11 +81,16 @@ func NodeadmProvider(cluster clusterplugin.Cluster) yip.YipConfig {
 		)
 	}
 
+	// prepare filesystem, proxy, and nodeadm config
 	bootBeforeStages := stages.PreInstallBootBeforeStages(cluster.Env, nc)
+
+	// run `nodeadm install` / `nodeadm upgrade` in agent-mode
 	if handleDependencies {
 		bootBeforeStages = append(bootBeforeStages, stages.InstallBootBeforeStages(nc, proxyArgs)...)
 	}
-	bootBeforeStages = append(bootBeforeStages, stages.InitBootBeforeStages(nc, proxyArgs, handleDependencies)...)
+
+	// run `nodeadm init`
+	bootBeforeStages = append(bootBeforeStages, stages.InitBootBeforeStages(proxyArgs, handleDependencies)...)
 
 	cfg := yip.YipConfig{
 		Name: "Kairos Provider Nodeadm",

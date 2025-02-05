@@ -141,127 +141,6 @@ Stages:
     UnpackImages: null
     Users: null
   - After: null
-    Commands:
-    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 iam-ra /opt/nodeadmutil
-      false '
-    - touch /opt/nodeadmutil/nodeadm.install
-    DataSources:
-      Path: ""
-      Providers: null
-    DeleteEntities: null
-    Directories: null
-    Dns:
-      DnsOptions: null
-      DnsSearch: null
-      Nameservers: null
-      Path: ""
-    Downloads: null
-    EnsureEntities: null
-    Environment: null
-    EnvironmentFile: ""
-    Files: null
-    Git:
-      Auth:
-        Insecure: false
-        Password: ""
-        PrivateKey: ""
-        PublicKey: ""
-        Username: ""
-      Branch: ""
-      BranchOnly: false
-      Path: ""
-      URL: ""
-    Hostname: ""
-    If: '[ ! -f /opt/nodeadmutil/nodeadm.install ]'
-    Layout:
-      Device: null
-      Expand: null
-      Parts: null
-    Modules: null
-    Name: Run Nodeadm Install
-    Node: ""
-    OnlyIfArch: ""
-    OnlyIfOs: ""
-    OnlyIfOsVersion: ""
-    OnlyIfServiceManager: ""
-    Packages:
-      Install: null
-      Refresh: false
-      Remove: null
-      Upgrade: false
-    SSHKeys: null
-    Sysctl: null
-    Systemctl:
-      Disable: null
-      Enable: null
-      Mask: null
-      Overrides: null
-      Start: null
-    SystemdFirstBoot: null
-    TimeSyncd: null
-    UnpackImages: null
-    Users: null
-  - After: null
-    Commands:
-    - 'bash /opt/nodeadmutil/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadmutil/node-config.yaml
-      /opt/nodeadmutil false '
-    DataSources:
-      Path: ""
-      Providers: null
-    DeleteEntities: null
-    Directories: null
-    Dns:
-      DnsOptions: null
-      DnsSearch: null
-      Nameservers: null
-      Path: ""
-    Downloads: null
-    EnsureEntities: null
-    Environment: null
-    EnvironmentFile: ""
-    Files: null
-    Git:
-      Auth:
-        Insecure: false
-        Password: ""
-        PrivateKey: ""
-        PublicKey: ""
-        Username: ""
-      Branch: ""
-      BranchOnly: false
-      Path: ""
-      URL: ""
-    Hostname: ""
-    If: ""
-    Layout:
-      Device: null
-      Expand: null
-      Parts: null
-    Modules: null
-    Name: Run Nodeadm Upgrade
-    Node: ""
-    OnlyIfArch: ""
-    OnlyIfOs: ""
-    OnlyIfOsVersion: ""
-    OnlyIfServiceManager: ""
-    Packages:
-      Install: null
-      Refresh: false
-      Remove: null
-      Upgrade: false
-    SSHKeys: null
-    Sysctl: null
-    Systemctl:
-      Disable: null
-      Enable: null
-      Mask: null
-      Overrides: null
-      Start: null
-    SystemdFirstBoot: null
-    TimeSyncd: null
-    UnpackImages: null
-    Users: null
-  - After: null
     Commands: null
     DataSources:
       Path: ""
@@ -364,6 +243,127 @@ Stages:
       Parts: null
     Modules: null
     Name: Generate nodeadm config file
+    Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+      Upgrade: false
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    UnpackImages: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-install.sh 1.30.0 iam-ra /opt/nodeadmutil
+      false '
+    - touch /opt/nodeadmutil/nodeadm.install
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: '[ ! -f /opt/nodeadmutil/nodeadm.install ]'
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Install
+    Node: ""
+    OnlyIfArch: ""
+    OnlyIfOs: ""
+    OnlyIfOsVersion: ""
+    OnlyIfServiceManager: ""
+    Packages:
+      Install: null
+      Refresh: false
+      Remove: null
+      Upgrade: false
+    SSHKeys: null
+    Sysctl: null
+    Systemctl:
+      Disable: null
+      Enable: null
+      Mask: null
+      Overrides: null
+      Start: null
+    SystemdFirstBoot: null
+    TimeSyncd: null
+    UnpackImages: null
+    Users: null
+  - After: null
+    Commands:
+    - 'bash /opt/nodeadmutil/scripts/nodeadm-upgrade.sh 1.30.0 /opt/nodeadmutil/node-config.yaml
+      /opt/nodeadmutil false '
+    DataSources:
+      Path: ""
+      Providers: null
+    DeleteEntities: null
+    Directories: null
+    Dns:
+      DnsOptions: null
+      DnsSearch: null
+      Nameservers: null
+      Path: ""
+    Downloads: null
+    EnsureEntities: null
+    Environment: null
+    EnvironmentFile: ""
+    Files: null
+    Git:
+      Auth:
+        Insecure: false
+        Password: ""
+        PrivateKey: ""
+        PublicKey: ""
+        Username: ""
+      Branch: ""
+      BranchOnly: false
+      Path: ""
+      URL: ""
+    Hostname: ""
+    If: ""
+    Layout:
+      Device: null
+      Expand: null
+      Parts: null
+    Modules: null
+    Name: Run Nodeadm Upgrade
     Node: ""
     OnlyIfArch: ""
     OnlyIfOs: ""
