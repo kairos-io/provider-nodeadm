@@ -2,11 +2,11 @@ module github.com/kairos-io/provider-nodeadm
 
 go 1.23.1
 
-toolchain go1.23.5
+toolchain go1.23.6
 
 require (
 	github.com/aws/eks-hybrid v1.0.2
-	github.com/kairos-io/kairos-sdk v0.7.2
+	github.com/kairos-io/kairos-sdk v0.7.3
 	github.com/mudler/yip v1.14.1
 	github.com/sirupsen/logrus v1.9.4-0.20241118143825-d1e633264448
 	gopkg.in/yaml.v3 v3.0.1
@@ -23,7 +23,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
