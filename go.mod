@@ -5,7 +5,7 @@ go 1.23.6
 toolchain go1.24.0
 
 require (
-	github.com/aws/eks-hybrid v1.0.2
+	github.com/aws/eks-hybrid v1.0.3
 	github.com/kairos-io/kairos-sdk v0.7.3
 	github.com/mudler/yip v1.15.0
 	github.com/sirupsen/logrus v1.9.4-0.20241118143825-d1e633264448
@@ -28,10 +28,10 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
-	sigs.k8s.io/controller-runtime v0.17.0 // indirect
-	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.4.2 // indirect
+	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
+	sigs.k8s.io/controller-runtime v0.20.2 // indirect
+	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
 )
 
 require (
