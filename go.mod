@@ -2,7 +2,7 @@ module github.com/kairos-io/provider-nodeadm
 
 go 1.23.6
 
-toolchain go1.24.0
+toolchain go1.24.1
 
 require (
 	github.com/aws/eks-hybrid v1.0.3
@@ -10,7 +10,7 @@ require (
 	github.com/mudler/yip v1.15.0
 	github.com/sirupsen/logrus v1.9.4-0.20241118143825-d1e633264448
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.32.2
+	k8s.io/apimachinery v0.32.3
 	sigs.k8s.io/yaml v1.4.0
 )
 
