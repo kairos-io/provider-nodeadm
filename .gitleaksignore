@@ -1,0 +1,8 @@
+29d0deaba0665965dc14a9f3a49e004a21e7703d:pkg/provider/testdata/iam-ra-agent/expected.yaml:private-key:215
+5d47cc2366b6517621c4cc99e209abe83135c324:pkg/provider/testdata/iam-ra-appliance/node-configuration.json:private-key:11
+5d47cc2366b6517621c4cc99e209abe83135c324:pkg/provider/testdata/iam-ra-appliance/expected.yaml:private-key:203
+5d47cc2366b6517621c4cc99e209abe83135c324:pkg/provider/testdata/iam-ra-agent/expected.yaml:private-key:312
+6bcac0e813ad2f2e7420e6da9a97a6b8ca9edea9:pkg/provider/testdata/node-configuration.json:private-key:11
+c924771183971008b4901719f8d1ec4137f1413d:pkg/provider/testdata/options.yaml:private-key:39
+6bcac0e813ad2f2e7420e6da9a97a6b8ca9edea9:pkg/provider/testdata/got.yaml:private-key:332
+c924771183971008b4901719f8d1ec4137f1413d:pkg/provider/testdata/expected.yaml:private-key:334
