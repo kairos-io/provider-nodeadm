@@ -12,7 +12,7 @@ ARG NODEADM_VERSION=1.0.0
 ARG NODEADM_VERSION_TAG=$(echo $NODEADM_VERSION | sed s/+/-/)
 
 ARG LUET_VERSION=0.35.1
-ARG GOLINT_VERSION=v1.61.0
+ARG GOLINT_VERSION=v2.10.1
 ARG GOLANG_VERSION=1.25
 
 luet:
@@ -77,7 +77,7 @@ lint:
     RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s ${GOLINT_VERSION}
     WORKDIR /build
     COPY . .
-    RUN golangci-lint run --timeout=5m
+    RUN golangci-lint run -v --timeout=5m
 
 test:
     FROM +go-deps
