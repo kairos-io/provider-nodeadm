@@ -13,7 +13,7 @@ ARG NODEADM_VERSION_TAG=$(echo $NODEADM_VERSION | sed s/+/-/)
 
 ARG LUET_VERSION=0.35.1
 ARG GOLINT_VERSION=v2.10.1
-ARG GOLANG_VERSION=1.25.10
+ARG GOLANG_VERSION=1.25
 
 luet:
     FROM quay.io/luet/base:$LUET_VERSION
@@ -24,7 +24,7 @@ build-cosign:
     SAVE ARTIFACT /ko-app/cosign cosign
 
 go-deps:
-    FROM us-docker.pkg.dev/palette-images/build-base-images/golang:${GOLANG_VERSION}-alpine
+    FROM us-central1-docker.pkg.dev/palette-images-dev/hardened-images/builder/golang:${GOLANG_VERSION}-alpine
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
