@@ -1,8 +1,6 @@
 module github.com/kairos-io/provider-nodeadm
 
-go 1.23.1
-
-toolchain go1.23.6
+go 1.26.3
 
 require (
 	github.com/aws/eks-hybrid v1.0.2
