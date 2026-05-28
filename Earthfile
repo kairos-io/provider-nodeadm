@@ -13,7 +13,7 @@ ARG NODEADM_VERSION_TAG=$(echo $NODEADM_VERSION | sed s/+/-/)
 
 ARG LUET_VERSION=0.35.1
 ARG GOLINT_VERSION=v2.10.1
-ARG GOLANG_VERSION=1.25
+ARG GOLANG_VERSION=1.26.3
 
 luet:
     FROM quay.io/luet/base:$LUET_VERSION
@@ -24,7 +24,7 @@ build-cosign:
     SAVE ARTIFACT /ko-app/cosign cosign
 
 go-deps:
-    FROM us-docker.pkg.dev/palette-images/build-base-images/golang:${GOLANG_VERSION}-alpine
+    FROM us-central1-docker.pkg.dev/palette-images-dev/hardened-images/builder/golang:${GOLANG_VERSION}-alpine
     WORKDIR /build
     COPY go.mod go.sum ./
     RUN go mod download
@@ -74,7 +74,7 @@ build-provider-package:
 
 lint:
     FROM golang:$GOLANG_VERSION
-    RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s ${GOLINT_VERSION}
+    RUN go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLINT_VERSION}
     WORKDIR /build
     COPY . .
     RUN golangci-lint run -v --timeout=5m
