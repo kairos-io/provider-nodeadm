@@ -37,9 +37,5 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }} 
-      - run: earthly --ci --output  +provider-package-all-platforms --IMAGE_REPOSITORY=ghcr.io/kairos-io
-      - name: Push to testing
-        run: |
-          docker tag ghcr.io/kairos-io/provider-nodeadm:latest ttl.sh/kairos-io/provider-nodeadm-${{ github.sha }}:24h
-          docker push ttl.sh/kairos-io/provider-nodeadm-${{ github.sha }}:24h
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: earthly --ci --output +build-provider-package

@@ -10,6 +10,7 @@ ARG BASE_IMAGE_TAG=$(echo $BASE_IMAGE | grep -o :.* | cut -c2-)
 ARG PROVIDER_IMAGE_NAME=nodeadm
 ARG NODEADM_VERSION=1.0.18
 ARG NODEADM_VERSION_TAG=$(echo $NODEADM_VERSION | sed s/+/-/)
+ARG FIPS_ENABLED=false
 
 ARG LUET_VERSION=0.35.1
 ARG GOLINT_VERSION=v2.10.1
@@ -38,7 +39,15 @@ BUILD_GOLANG:
     COPY . ./
     ARG BIN
     ARG SRC
-    RUN go-build-static.sh -a -o ${BIN} ./${SRC}
+
+    IF $FIPS_ENABLED
+        RUN go-build-fips.sh -a -o ${BIN} ./${SRC}
+        RUN assert-fips.sh ${BIN}
+        RUN assert-static.sh ${BIN}
+    ELSE
+        RUN go-build-static.sh -a -o ${BIN} ./${SRC}
+    END
+
     SAVE ARTIFACT ${BIN} ${BIN} AS LOCAL build/${BIN}
 
 ARCH:
@@ -62,6 +71,7 @@ build-provider:
 
 build-provider-package:
     DO +VERSION
+    ARG TARGETARCH
     ARG VERSION=$(cat VERSION)
 
     FROM scratch
@@ -69,8 +79,18 @@ build-provider-package:
     COPY +build-provider/agent-provider-nodeadm /system/providers/agent-provider-nodeadm
     COPY scripts/ /opt/nodeadmutil/scripts/
 
-    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:latest
-    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:${VERSION}
+    SAVE IMAGE --push $IMAGE_REPOSITORY/provider-nodeadm:${VERSION}-${TARGETARCH}
+
+provider-package-merge:
+    BUILD --platform=linux/amd64 --platform=linux/arm64 +provider-package-pull
+
+provider-package-pull:
+    DO +VERSION
+    ARG VERSION=$(cat VERSION)
+    ARG TARGETARCH
+    FROM ${IMAGE_REPOSITORY}/provider-nodeadm:${VERSION}-${TARGETARCH}
+    SAVE IMAGE --push ${IMAGE_REPOSITORY}/provider-nodeadm:${VERSION}
+    SAVE IMAGE --push ${IMAGE_REPOSITORY}/provider-nodeadm:latest
 
 lint:
     FROM golang:$GOLANG_VERSION
