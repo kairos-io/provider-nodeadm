@@ -1,7 +1,7 @@
 # Kairos Nodeadm Cluster Plugin
 Kairos provider for nodeadm. Provides bootstrap automation for AWS EKS hybrid nodes.
 
-> **Found a bug, or want to request a feature?** Open it on
-> [kairos-io/kairos](https://github.com/kairos-io/kairos/issues), including
-> issues about this repository. Every Kairos issue lives in one place, so you
-> never have to work out which repository to file against.
+> [!WARNING]
+> **Community supported.** Support here is done by the community that manages
+> this repository, not by the Kairos team. Open issues here, on this
+> repository.
